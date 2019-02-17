@@ -8,7 +8,10 @@
     "node_modules": true,
     ".nyc_output": true,
     "test/functional/.testcontext": true,
-    "**/*.tgz": true
+    "**/*.tgz": true,
+    ".taskkey": true,
+    ".publish": true,
+    "**/*.vsix": true
   },
   "testExplorer.codeLens": true,
   "mochaExplorer.nodePath": null,

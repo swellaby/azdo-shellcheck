@@ -51,6 +51,16 @@
     "coverage:unit": "nyc --report-dir .coverage/unit --check-coverage false npm run test:unit",
     "coverage:unit:enforce": "nyc --report-dir .coverage/unit npm run test:unit",
     "coverage:unit:open": "npm run coverage:unit && opn .coverage/unit/index.html",
+    "package:deps": "npm run package:deps:shellcheck",
+    "package:deps:shellcheck": "copy-node-modules . .publish/tasks/shellcheck",
+    "package:tasks": "npm run package:task:shellcheck",
+    "package:task:shellcheck": "mkdirp .publish/tasks/shellcheck && ncp src/tasks/shellcheck/ .publish/tasks/shellcheck/ --filter=\"^((?!(\\.(map|ts))).)+$\"",
+    "prepackage": "npm run transpile && npm run package:deps && npm run package:tasks",
+    "package": "tfx extension create --manifest-globs vss-extension.json",
+    "pretask:upload": "npm run prepackage",
+    "tfx:login": "tfx login",
+    "task:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
+    "task:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm i -g yo && npm run build"
   },
@@ -63,21 +73,26 @@
     "@types/node": "^11.9.4",
     "@types/sinon": "^7.0.6",
     "chai": "^4.2.0",
+    "copy-node-modules": "^1.1.1",
     "eslint": "^5.14.0",
     "husky": "^1.3.1",
+    "mkdirp": "^0.5.1",
     "mocha": "^5.2.0",
     "mocha-multi-reporters": "^1.1.7",
     "mocha-sonarqube-reporter": "^1.0.1",
+    "ncp": "^2.0.0",
     "nyc": "^13.3.0",
     "opn-cli": "^4.0.0",
     "replace-in-file": "^3.4.3",
     "rimraf": "^2.6.3",
     "sinon": "^7.2.3",
+    "tfx-cli": "^0.6.4",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^2.7.7",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "uuid": "^3.3.2"
   }
 }

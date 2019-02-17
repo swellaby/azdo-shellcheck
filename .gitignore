@@ -2,13 +2,18 @@ node_modules/
 .testresults/
 .coverage/
 .nyc_output/
-*.tar*
-*.tgz*
+.publish/
+.vsix/
+**/node_modules/
+**/*.tar*
+**/*.gz
+**/*.tgz
+**/*.zip
 .ntvs_analysis.dat*
 npm-debug*
+.taskkey
 
-generators/**/*.js*
+src/**/*.js*
 test/**/*.js*
 !**/*.json
-**/*.d.ts
 **/.testcontext

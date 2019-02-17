@@ -1,0 +1,38 @@
+{
+  "id": "7d357064-b610-44c0-b52c-734fdf665a7c",
+  "name": "shellcheck",
+  "friendlyName": "ShellCheck",
+  "description": "Run ShellCheck",
+  "category": "Utility",
+  "author": "Swellaby",
+  "helpMarkDown": "[More Information](https://github.com/swellaby/azdo-shellcheck)",
+  "version": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 1
+  },
+  "instanceNameFormat": "Run ShellCheck analysis",
+  "inputs": [
+    {
+      "name": "format",
+      "type": "string",
+      "label": "",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": ""
+    },
+    {
+      "name": "",
+      "type": "string",
+      "label": "",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": ""
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "runner.js"
+    }
+  }
+}
