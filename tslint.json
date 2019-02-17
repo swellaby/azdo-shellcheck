@@ -1,0 +1,7 @@
+{
+    "extends": "@swellaby/tslint-config",
+    "rules": {
+  
+    }
+  }
+  
