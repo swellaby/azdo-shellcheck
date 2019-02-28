@@ -14,8 +14,6 @@
     "**/*.vsix": true
   },
   "testExplorer.codeLens": true,
-  "mochaExplorer.nodePath": null,
-  "mochaExplorer.optsFile": "test/unit/mocha.opts",
   "cSpell.enabled": true,
   "cSpell.enabledLanguageIds": [
     "asciidoc",
@@ -39,5 +37,22 @@
     "node",
     "npm",
     "softwareTerms"
-  ]
+  ],
+  "vsicons.associations.files": [
+    {
+      "icon": "azurepipelines",
+      "extensions": [
+        "azure-pipelines.linux-pr.yml",
+        "azure-pipelines.mac-pr.yml",
+        "azure-pipelines.windows-pr.yml",
+        "azure-pipelines.ci.yml",
+        "azure-pipelines.cd.yml",
+      ],
+      "filename": true,
+      "format": "svg"
+    }
+  ],
+  "files.associations": {
+    "*azure-pipelines*": "azure-pipelines"
+  }
 }

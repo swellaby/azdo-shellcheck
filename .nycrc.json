@@ -1,3 +1,6 @@
 {
-  "extends": "@swellaby/nyc-config"
+  "extends": "@swellaby/nyc-config",
+  "exclude": [
+    "src/**/runner*"
+  ]
 }
