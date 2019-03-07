@@ -1,5 +1,5 @@
 # azdo-shellcheck
-ShellCheck extension for Azure   
+ShellCheck extension for Azure DevOps
 
 [![License Badge][license-badge]][license-url]
 
