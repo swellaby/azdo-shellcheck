@@ -1,0 +1,35 @@
+trigger:
+- master
+
+pr:
+- master
+
+pool:
+  vmImage: 'macos-10.13'
+
+steps:
+- task: Npm@1
+  displayName: Install dependencies
+  inputs:
+    command: install
+
+- task: Npm@1
+  displayName: Run tests and lint
+  inputs:
+    command: custom
+    customCommand: run build
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage results'
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Build.SourcesDirectory)/.coverage/unit/cobertura-coverage.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/.coverage/unit'
+
+- task: PublishTestResults@2
+  displayName: 'Publish unit test results'
+  inputs:
+    testResultsFormat: JUnit
+    testResultsFiles: 'xunit.xml'
+    searchFolder: $(Build.SourcesDirectory)/.testresults/unit
+    testRunTitle: 'azdo-shellcheck::Unit Tests::Mac PR - Build $(Build.BuildId)'
