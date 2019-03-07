@@ -2,6 +2,7 @@
   "recommendations": [
     "swellaby.common-pack",
     "ms-vscode.vscode-typescript-tslint-plugin",
+    "ms-azure-devops.azure-pipelines",
     "dbaeumer.vscode-eslint",
     "christian-kohler.path-intellisense",
     "christian-kohler.npm-intellisense",
