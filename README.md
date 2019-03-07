@@ -1,7 +1,7 @@
 # azdo-shellcheck
 ShellCheck extension for Azure   
 
-[![License Badge][license-badge]][license url]
+[![License Badge][license-badge]][license-url]
 
 [![Linux CI Badge][linux-ci-badge]][linux-ci-url]
 [![Mac CI Badge][mac-ci-badge]][mac-ci-url]
@@ -12,7 +12,7 @@ ShellCheck extension for Azure
 
 [version-badge]: https://img.shields.io/crates/v/rusty-hook.svg?style=flat-square
 [license-url]: ./LICENSE
-[license-badge]: https://img.shields.io/github/license/swellaby/azdo-shellcheck.svg?style=flat-square
+[license-badge]: https://img.shields.io/github/license/swellaby/azdo-shellcheck.svg?style=flat-square&color=blue
 [downloads-badge]: https://img.shields.io/crates/d/rusty-hook.svg?style=flat-square
 [linux-ci-badge]: https://img.shields.io/azure-devops/build/swellaby/opensource/58/master.svg?label=linux%20build&style=flat-square
 [linux-ci-url]: https://dev.azure.com/swellaby/OpenSource/_build/latest?definitionId=58
