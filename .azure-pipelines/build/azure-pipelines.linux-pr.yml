@@ -8,7 +8,6 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-
 - task: Npm@1
   displayName: Install dependencies
   inputs:
@@ -20,9 +19,9 @@ steps:
     command: custom
     customCommand: run build
 
-# - script: |
-#     bash <(curl -s https://codecov.io/bash) -t $(codecovToken)
-#   displayName: 'Publish coverage to Codecov'
+- script: |
+    bash <(curl -s https://codecov.io/bash) -t $(codecovToken)
+  displayName: 'Publish coverage to Codecov'
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage results'
