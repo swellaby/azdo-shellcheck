@@ -35,6 +35,6 @@ steps:
   displayName: 'Publish unit test results'
   inputs:
     testResultsFormat: JUnit
-    testResultsFiles: 'junit.xml'
+    testResultsFiles: 'xunit.xml'
     searchFolder: $(Build.SourcesDirectory)/.testresults/unit
     testRunTitle: 'azdo-shellcheck::Unit Tests::Linux PR - Build $(Build.BuildId)'
