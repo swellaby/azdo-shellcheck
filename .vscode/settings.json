@@ -21,19 +21,15 @@
     ".vscode",
   ],
   "cSpell.enabledLanguageIds": [
-    "asciidoc",
     "azure-pipelines",
-    "html",
     "javascript",
     "json",
     "markdown",
     "plaintext",
-    "restructuredtext",
-    "scss",
+    "properties",
     "text",
     "typescript",
     "yaml",
-    "yml"
   ],
   "cSpell.dictionaries": [
     "companies",
