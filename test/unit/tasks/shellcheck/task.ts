@@ -8,7 +8,7 @@ import task = require('../../../../src/tasks/shellcheck/task');
 
 const assert = chai.assert;
 
-suite('task Tests', () => {
+suite('task', () => {
     let debugStub: Sinon.SinonStub;
     let getInputStub: Sinon.SinonStub;
     let setResultStub: Sinon.SinonStub;
@@ -26,14 +26,14 @@ suite('task Tests', () => {
         Sinon.restore();
     });
 
-    suite('input config Tests', () => {
+    suite('input config', () => {
         test('Should configure format input correctly', async () => {
             await task.run();
             assert.isTrue(getInputStub.calledWithExactly(formatInputKey, true));
         });
     });
 
-    suite('run Tests', () => {
+    suite('run', () => {
         test('Should fail task with correct error message when error is thrown', async () => {
             debugStub.throws(() => new Error());
             await task.run();
