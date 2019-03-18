@@ -12,6 +12,7 @@ resources:
   - repository: templates
     type: github
     name: swellaby/azure-pipelines-templates
+    endpoint: https://github.com/swellaby/azure-pipelines-templates.git
 
 steps:
 - template: templates/yml/node/combo/npm-build-validation-xunit-cobertura.yml@templates
