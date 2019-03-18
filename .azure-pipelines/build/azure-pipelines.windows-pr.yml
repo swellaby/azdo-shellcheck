@@ -7,29 +7,20 @@ pr:
 pool:
   vmImage: 'vs2017-win2016'
 
+resources:
+  repositories:
+  - repository: templates
+    type: github
+    name: swellaby/azure-pipelines-templates
+    endpoint: swellaby
+
 steps:
-- task: Npm@1
-  displayName: Install dependencies
-  inputs:
-    command: install
+- template: templates/yml/node/combo/npm-build-validation-xunit-cobertura.yml@templates
+  parameters:
+    publishTestResults:
+      taskDisplayName: 'Publish unit test results'
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'xunit.xml'
+      searchFolder: '$(Build.SourcesDirectory)/.testresults/unit'
+      testRunTitle: 'azdo-shellcheck::Unit Tests::Windows PR - Build $(Build.BuildId)'
 
-- task: Npm@1
-  displayName: Run tests and lint
-  inputs:
-    command: custom
-    customCommand: run build
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage results'
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/.coverage/unit/cobertura-coverage.xml'
-    reportDirectory: '$(Build.SourcesDirectory)/.coverage/unit'
-
-- task: PublishTestResults@2
-  displayName: 'Publish unit test results'
-  inputs:
-    testResultsFormat: JUnit
-    testResultsFiles: 'xunit.xml'
-    searchFolder: $(Build.SourcesDirectory)/.testresults/unit
-    testRunTitle: 'azdo-shellcheck::Unit Tests::Windows PR - Build $(Build.BuildId)'
