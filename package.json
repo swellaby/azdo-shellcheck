@@ -29,10 +29,13 @@
   },
   "scripts": {
     "build": "npm run coverage:enforce && npm run lint:build",
+    "clean:publish": "rimraf .publish",
+    "clean:vsix": "rimraf .vsix",
+    "clean:package": "rimraf .publish .vsix",
     "clean:test": "rimraf .testresults .coverage",
     "clean:test:unit": "rimraf .testresults/unit .coverage/unit",
-    "clean:js": "rimraf test/**/{*.js,*.map} generators/**/{*.js,*.map}",
-    "clean": "npm run clean:test && npm run clean:js",
+    "clean:js": "rimraf {test,src}/**/*.{js,map}",
+    "clean": "npm run clean:test && npm run clean:js && npm run clean:package",
     "pretranspile": "npm run clean:js",
     "transpile": "tsc",
     "tslint": "tslint -p tsconfig.json -c tslint.json -t stylish generators/**/*.ts test/**/*.ts",
@@ -53,16 +56,24 @@
     "coverage:unit:open": "npm run coverage:unit && opn .coverage/unit/index.html",
     "package:deps": "npm run package:deps:shellcheck",
     "package:deps:shellcheck": "copy-node-modules . .publish/tasks/shellcheck",
+    "prepackage:tasks": "npm run version:bump:tasks",
     "package:tasks": "npm run package:task:shellcheck",
     "package:task:shellcheck": "mkdirp .publish/tasks/shellcheck && ncp src/tasks/shellcheck/ .publish/tasks/shellcheck/ --filter=\"^((?!(\\.(map|ts))).)+$\"",
-    "prepackage": "npm run transpile && npm run package:deps && npm run package:tasks",
-    "package": "tfx extension create --manifest-globs vss-extension.json",
-    "pretask:upload": "npm run prepackage",
+    "prepackage:ext": "npm run clean:package && npm run transpile && npm run package:deps && npm run package:tasks",
+    "package:ext": "tfx extension create --manifest-globs vss-extension.json --rev-version --output-path .vsix/",
     "tfx:login": "tfx login",
+    "pretask:upload": "npm run prepackage:ext",
     "task:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
     "task:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
-    "dev:setup": "npm i && npm run build"
+    "dev:setup": "npm i && npm run build",
+    "version:bump:tasks": "vsts-bump src/tasks/**/task.json"
+  },
+  "dependencies": {
+    "azure-pipelines-task-lib": "^2.8.0",
+    "azure-pipelines-tool-lib": "^0.12.0",
+    "tslib": "^1.9.3",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@swellaby/eslint-config": "^1.1.6",
@@ -70,11 +81,11 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.11.3",
+    "@types/node": "^11.11.4",
     "@types/sinon": "^7.0.10",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
-    "eslint": "^5.15.2",
+    "eslint": "^5.15.3",
     "husky": "^1.3.1",
     "mkdirp": "^0.5.1",
     "mocha": "^6.0.2",
@@ -88,12 +99,7 @@
     "sinon": "^7.2.7",
     "tfx-cli": "^0.6.4",
     "tslint": "^5.14.0",
-    "typescript": "^3.3.3333"
-  },
-  "dependencies": {
-    "azure-pipelines-task-lib": "^2.8.0",
-    "azure-pipelines-tool-lib": "^0.12.0",
-    "tslib": "^1.9.3",
-    "uuid": "^3.3.2"
+    "typescript": "^3.3.4000",
+    "vsts-bump": "^1.0.7"
   }
 }

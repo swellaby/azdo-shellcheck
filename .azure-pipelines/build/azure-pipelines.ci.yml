@@ -28,11 +28,20 @@ steps:
   displayName: 'Publish coverage to Codecov'
 
 - script: |
-    echo "should bump stuff here"
+    git checkout master
+    git config user.name "calebcartwright"
+    git config user.email "caleb.cartwright@outlook.com"
+    npm -f version $(packageBumpType) -m "Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
+    npm run package:ext
+    git add package-lock.json vss-extension.json src/tasks
+    git commit -n -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
+    git -c http.extraheader="AUTHORIZATION: basic $(System.AccessToken)" push
+  displayName: 'Package extension'
 
 - script: |
     export PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version);")
     echo "##vso[task.setvariable variable=packageVersion]$PACKAGE_VERSION"
+  displayName: 'Set variables'
 
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
   displayName: 'Prepare analysis on SonarCloud'
@@ -48,3 +57,9 @@ steps:
 
 - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
   displayName: 'Publish quality gate result'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    ArtifactName: $(vsixArtifactName)
+    targetPath: '$(Build.SourcesDirectory)/.vsix'
+  displayName: Publish extension VSIX
