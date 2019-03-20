@@ -35,8 +35,8 @@ steps:
     git config --list
     git config --global --list
     git checkout master
-    git config user.name "azure-pipelines[bot]"
-    git config user.email "caleb.cartwright@outlook.com"
+    git config user.name "azurepipelines"
+    #git config user.email "caleb.cartwright@outlook.com"
     npm -f version $(packageBumpType) -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     export PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version);")
     echo "##vso[task.setvariable variable=packageVersion]$PACKAGE_VERSION"
