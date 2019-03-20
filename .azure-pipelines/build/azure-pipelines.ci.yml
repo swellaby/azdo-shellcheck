@@ -33,8 +33,8 @@ steps:
 
 - script: |
     git checkout master
-    #git config user.name "calebcartwright"
-    #git config user.email "caleb.cartwright@outlook.com"
+    git config user.name "calebcartwright"
+    git config user.email "caleb.cartwright@outlook.com"
     npm -f version $(packageBumpType) -m "Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
@@ -64,8 +64,8 @@ steps:
 - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
   displayName: 'Publish quality gate result'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@0
   inputs:
-    ArtifactName: $(vsixArtifactName)
+    artifactName: $(vsixArtifactName)
     targetPath: '$(Build.SourcesDirectory)/.vsix'
-  displayName: Publish extension VSIX
+  displayName: 'Publish extension VSIX'
