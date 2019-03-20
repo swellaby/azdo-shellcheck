@@ -33,13 +33,12 @@ steps:
 
 - script: |
     git checkout master
-    git config user.name "calebcartwright"
-    git config user.email "caleb.cartwright@outlook.com"
+    #git config user.name "calebcartwright"
+    #git config user.email "caleb.cartwright@outlook.com"
     npm -f version $(packageBumpType) -m "Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
     git commit -n -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
-    #git -c http.extraheader="AUTHORIZATION: basic $SYSTEM_ACCESS_TOKEN" push
     git push
   env:
     SYSTEM_ACCESS_TOKEN: $(System.AccessToken)
