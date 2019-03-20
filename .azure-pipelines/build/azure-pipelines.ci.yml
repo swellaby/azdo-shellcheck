@@ -35,7 +35,8 @@ steps:
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
     git commit -n -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
-    git -c http.extraheader="AUTHORIZATION: basic $SYSTEM_ACCESS_TOKEN" push
+    #git -c http.extraheader="AUTHORIZATION: basic $SYSTEM_ACCESS_TOKEN" push
+    git push
   env:
     SYSTEM_ACCESS_TOKEN: $(System.AccessToken)
   displayName: 'Package extension'
