@@ -12,6 +12,7 @@ node_modules/
 .ntvs_analysis.dat*
 npm-debug*
 .taskkey
+**/*.vsix
 
 src/**/*.js*
 test/**/*.js*

@@ -22,6 +22,8 @@
     "testresults",
     "toolrunner",
     "tslib",
+    "vsix",
+    "vsts",
     "xunit",
     "yosay"
   ],
