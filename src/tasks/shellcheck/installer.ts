@@ -5,6 +5,7 @@ import path = require('path');
 
 import taskLib = require('azure-pipelines-task-lib');
 import toolLib = require('azure-pipelines-tool-lib');
+import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
 
@@ -36,7 +37,7 @@ const installForMac = async () => {
         .tool('brew')
         .arg('install')
         .arg('shellcheck')
-        .exec();
+        .exec(<toolRunner.IExecOptions>{ silent: true });
 };
 
 /**
@@ -44,14 +45,15 @@ const installForMac = async () => {
  */
 const installForWindows = async () => {
     const downloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-stable.exe`;
-    await toolLib.downloadTool(downloadUrl);
+    const downloadLocation = await toolLib.downloadTool(downloadUrl, 'shellcheck.exe');
+    toolLib.prependPath(path.parse(downloadLocation).dir);
 };
 
 /**
  * Installs ShellCheck
  */
 export const installShellCheck = async () => {
-    const operatingSystem = taskLib.osType().toLowerCase();
+    const operatingSystem = os.type().toLowerCase();
     if (operatingSystem === 'linux') {
         await installForLinux();
     } else if (operatingSystem === 'darwin') {

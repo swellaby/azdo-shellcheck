@@ -36,11 +36,11 @@ steps:
     git config --global --list
     git config --system --list
     git checkout master
-    git config user.name "azurepipelines"
-    git config user.email "azurepipelines@microsoft.com"
+    git config user.name "AzurePipelines"
+    git config user.email "AzurePipelines@microsoft.com"
     npm -f version $(packageBumpType) -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     export PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version);")
-    echo "##vso[task.setvariable variable=packageVersion]$PACKAGE_VERSION"
+    echo "##vso[task.setVariable variable=packageVersion]$PACKAGE_VERSION"
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
     git commit -n -m "chore: Bumped to version $PACKAGE_VERSION from release pipeline $(succinctAllSkipTokens)"

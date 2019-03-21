@@ -4,6 +4,7 @@ import chai = require('chai');
 import Sinon = require('sinon');
 import taskLib = require('azure-pipelines-task-lib');
 
+import installer = require('../../../../src/tasks/shellcheck/installer');
 import task = require('../../../../src/tasks/shellcheck/task');
 
 const assert = chai.assert;
@@ -14,11 +15,14 @@ suite('task', () => {
     let setResultStub: Sinon.SinonStub;
     const format = 'junit';
     const formatInputKey = 'format';
+    const targetFiles = '**/*sh';
+    const targetFilesInputKey = 'targetFiles';
 
     setup(() => {
         debugStub = Sinon.stub(taskLib, 'debug');
         getInputStub = Sinon.stub(taskLib, 'getInput');
         getInputStub.withArgs(formatInputKey).callsFake(() => format);
+        getInputStub.withArgs(targetFilesInputKey).callsFake(() => targetFiles);
         setResultStub = Sinon.stub(taskLib, 'setResult');
     });
 
@@ -30,6 +34,11 @@ suite('task', () => {
         test('Should configure format input correctly', async () => {
             await task.run();
             assert.isTrue(getInputStub.calledWithExactly(formatInputKey, true));
+        });
+
+        test('Should configure targetFiles input correctly', async () => {
+            await task.run();
+            assert.isTrue(getInputStub.calledWithExactly(targetFilesInputKey, true));
         });
     });
 

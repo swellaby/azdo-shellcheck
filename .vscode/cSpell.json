@@ -15,6 +15,7 @@
     "pretask",
     "pretranspile",
     "shellcheck",
+    "sonarcloud",
     "sonarqube",
     "swellaby",
     "tagless",

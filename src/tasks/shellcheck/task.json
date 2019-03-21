@@ -9,25 +9,17 @@
   "version": {
     "Major": 0,
     "Minor": 0,
-    "Patch": 11
+    "Patch": 46
   },
-  "instanceNameFormat": "Run ShellCheck analysis",
+  "instanceNameFormat": "Run ShellCheck",
   "inputs": [
     {
-      "name": "format",
-      "type": "string",
-      "label": "",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": ""
-    },
-    {
-      "name": "",
-      "type": "string",
-      "label": "",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": ""
+      "name": "targetFiles",
+      "type": "filePath",
+      "label": "Target Files",
+      "defaultValue": "**/*.sh",
+      "required": true,
+      "helpMarkDown": "The script files to check. Yes you can use globs!"
     }
   ],
   "execution": {

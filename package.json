@@ -65,9 +65,10 @@
     "pretask:upload": "npm run prepackage:ext",
     "task:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
     "task:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
+    "version:bump:tasks": "vsts-bump src/tasks/**/task.json",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm run build",
-    "version:bump:tasks": "vsts-bump src/tasks/**/task.json"
+    "run:local": "npm run transpile && node src/tasks/shellcheck/runner.js"
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^2.8.0",
