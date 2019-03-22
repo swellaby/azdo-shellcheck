@@ -23,16 +23,20 @@ const getToolRunner = (scriptFiles: string[]) => {
 };
 
 const runShellCheck = async (scriptFiles: string[]) => {
-    if (!taskLib.which(shellcheckExecutable, false)) {
-        taskLib.debug('ShellCheck not found. Installing now...');
-        await installer.installShellCheck();
-    }
     try {
+        if (!taskLib.which(shellcheckExecutable, false)) {
+            taskLib.debug('ShellCheck not found. Installing now...');
+            await installer.installShellCheck();
+        }
+
         const shellCheckResult = await getToolRunner(scriptFiles).exec();
         if (shellCheckResult !== 0) {
-            handleShellCheckScanFailure();
+            return handleShellCheckScanFailure();
         }
+
+        return taskLib.setResult(taskLib.TaskResult.Succeeded, 'ShellCheck scan succeeded!', true);
     } catch (err) {
+        taskLib.debug(`Error details: ${err && err.message ? err.message : 'unknown'}`);
         handleShellCheckScanFailure();
     }
 };
@@ -42,10 +46,10 @@ export const run = async () => {
         const targetFiles = taskLib.getInput('targetFiles', true);
         const scripts = taskLib.findMatch(null, targetFiles);
         if (scripts.length === 0) {
-            return taskLib.warning(`No shell files found for input ${targetFiles}`);
+            return taskLib.warning(`No shell files found for input '${targetFiles}'.`);
         }
         await runShellCheck(scripts);
     } catch (err) {
-        taskLib.setResult(taskLib.TaskResult.Failed, 'Fatal error. Enable debugging to see error details');
+        taskLib.setResult(taskLib.TaskResult.Failed, 'Fatal error. Enable debugging to see error details.');
     }
 };

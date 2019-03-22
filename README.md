@@ -1,5 +1,7 @@
 # azdo-shellcheck
-ShellCheck extension for Azure DevOps
+[ShellCheck][shellcheck-repo] extension for Azure DevOps.  
+
+Functional, but still in an early preview/beta.   
 
 [![License Badge][license-badge]][license-url]
 
@@ -24,4 +26,5 @@ ShellCheck extension for Azure DevOps
 [coverage-url]: https://codecov.io/gh/swellaby/azdo-shellcheck/branch/master
 [tests-badge]: https://img.shields.io/azure-devops/tests/swellaby/opensource/58/master.svg?label=unit%20tests&style=flat-square
 [tests-url]: https://dev.azure.com/swellaby/OpenSource/_build/latest?definitionId=58&view=ms.vss-test-web.build-test-results-tab
+[shellcheck-repo]: https://github.com/koalaman/shellcheck
 [contributing]: .github/CONTRIBUTING.md

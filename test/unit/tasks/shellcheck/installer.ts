@@ -5,19 +5,23 @@ import os = require('os');
 import path = require('path');
 import Sinon = require('sinon');
 import taskLib = require('azure-pipelines-task-lib');
-import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 import toolLib = require('azure-pipelines-tool-lib');
+import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 import installer = require('../../../../src/tasks/shellcheck/installer');
 
 const assert = chai.assert;
 
 suite('installers', () => {
-    let taskLibOsStub: Sinon.SinonStub;
+    let osTypeStub: Sinon.SinonStub;
+    let toolLibPrependPathStub: Sinon.SinonStub;
+    let toolLibDownloadStub: Sinon.SinonStub;
     const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
 
     setup(() => {
-        taskLibOsStub = Sinon.stub(taskLib, 'osType');
+        osTypeStub = Sinon.stub(os, 'type');
+        toolLibPrependPathStub = Sinon.stub(toolLib, 'prependPath');
+        toolLibDownloadStub = Sinon.stub(toolLib, 'downloadTool');
     });
 
     teardown(() => {
@@ -26,7 +30,7 @@ suite('installers', () => {
 
     test('Should throw error on unsupported operating system', async () => {
         const operatingSystem = 'Scott-Tots';
-        taskLibOsStub.callsFake(() => operatingSystem);
+        osTypeStub.callsFake(() => operatingSystem);
         const expErrorMessage = `Unsupported Operating System: ${operatingSystem.toLowerCase()}`;
 
         try {
@@ -44,19 +48,16 @@ suite('installers', () => {
         const binaryLocation = `${tempRoot}/${binaryDirectoryName}`;
         let osArchStub: Sinon.SinonStub;
         let pathJoinStub: Sinon.SinonStub;
-        let toolLibDownloadStub: Sinon.SinonStub;
         let toolLibExtractTarStub: Sinon.SinonStub;
-        let toolLibPrependPathStub: Sinon.SinonStub;
 
         setup(() => {
-            taskLibOsStub.callsFake(() => 'linux');
+            osTypeStub.callsFake(() => 'linux');
             osArchStub = Sinon.stub(os, 'arch');
             pathJoinStub = Sinon.stub(path, 'join');
             pathJoinStub.withArgs(tempRoot, binaryDirectoryName).callsFake(() => binaryLocation);
-            toolLibDownloadStub = Sinon.stub(toolLib, 'downloadTool').callsFake(() => Promise.resolve(downloadDirectory));
+            toolLibDownloadStub.callsFake(() => Promise.resolve(downloadDirectory));
             toolLibExtractTarStub = Sinon.stub(toolLib, 'extractTar');
             toolLibExtractTarStub.withArgs(downloadDirectory).callsFake(() => Promise.resolve(tempRoot));
-            toolLibPrependPathStub = Sinon.stub(toolLib, 'prependPath');
         });
 
         test('Should throw error on unsupported architecture', async () => {
@@ -100,9 +101,9 @@ suite('installers', () => {
     });
 
     suite('Mac installer', () => {
-        let taskLibToolStub: sinon.SinonStub;
-        let toolRunnerArgStub: sinon.SinonStub;
-        let toolRunnerExecStub: sinon.SinonStub;
+        let taskLibToolStub: Sinon.SinonStub;
+        let toolRunnerArgStub: Sinon.SinonStub;
+        let toolRunnerExecStub: Sinon.SinonStub;
 
         const toolRunnerStub: toolRunner.ToolRunner = <toolRunner.ToolRunner> {
             arg: (_val) => null,
@@ -110,7 +111,7 @@ suite('installers', () => {
         };
 
         setup(() => {
-            taskLibOsStub.callsFake(() => 'darwin');
+            osTypeStub.callsFake(() => 'darwin');
             taskLibToolStub = Sinon.stub(taskLib, 'tool').callsFake(() => toolRunnerStub);
             toolRunnerArgStub = Sinon.stub(toolRunnerStub, 'arg').callsFake(() => toolRunnerStub);
             toolRunnerExecStub = Sinon.stub(toolRunnerStub, 'exec');
@@ -134,23 +135,29 @@ suite('installers', () => {
             assert.isTrue(toolRunnerArgStub.secondCall.calledWithExactly('shellcheck'));
             assert.deepEqual(toolRunnerArgStub.callCount, 2);
             assert.deepEqual(toolRunnerExecStub.callCount, 1);
+            assert.isTrue(toolRunnerExecStub.calledWithExactly(<toolRunner.IExecOptions>{ silent: true }));
         });
     });
 
     suite('Windows installer', () => {
-        const stableExecutableFileName = 'shellcheck-stable.exe';
+        const downloadFileName = 'shellcheck-stable.exe';
+        const shellcheckFileName = 'shellcheck.exe';
         const downloadDirectory = 'c:/users/me/temp';
-        let toolLibDownloadStub: Sinon.SinonStub;
+        const downloadPath = `${downloadDirectory}/${shellcheckFileName}`;
+        let pathParseStub: Sinon.SinonStub;
 
         setup(() => {
-            taskLibOsStub.callsFake(() => 'Windows_NT');
-            toolLibDownloadStub = Sinon.stub(toolLib, 'downloadTool').callsFake(() => Promise.resolve(downloadDirectory));
+            osTypeStub.callsFake(() => 'Windows_NT');
+            toolLibDownloadStub.callsFake(() => Promise.resolve(downloadPath));
+            pathParseStub = Sinon.stub(path, 'parse');
+            pathParseStub.withArgs(downloadPath).callsFake(() => ({ dir: downloadDirectory }));
         });
 
         test('Should install correctly', async () => {
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${stableExecutableFileName}`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${downloadFileName}`;
             await installer.installShellCheck();
-            assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl));
+            assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl, shellcheckFileName));
+            assert.isTrue(toolLibPrependPathStub.calledWithExactly(downloadDirectory));
         });
 
         test('Should bubble errors', async () => {
