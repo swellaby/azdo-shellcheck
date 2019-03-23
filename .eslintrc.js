@@ -2,7 +2,7 @@
 
 module.exports = {
     extends: '@swellaby/eslint-config/lib/bundles/ts-node',
-    'rules': {
+    rules: {
         'no-unused-vars': [
             'error',
             {
