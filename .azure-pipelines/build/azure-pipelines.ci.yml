@@ -14,9 +14,9 @@ resources:
     endpoint: swellaby
 
 steps:
-- checkout: self
-  persistCredentials: true
-  clean: true
+# - checkout: self
+#   persistCredentials: true
+#   clean: true
 
 - template: templates/yml/node/combo/npm-build-validation-xunit-cobertura.yml@templates
   parameters:
