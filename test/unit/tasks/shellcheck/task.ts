@@ -15,12 +15,20 @@ suite('task', () => {
     let taskLibDebugStub: Sinon.SinonStub;
     let taskLibFindMatchStub: Sinon.SinonStub;
     let taskLibGetInputStub: Sinon.SinonStub;
+    let taskLibGetBoolInputStub: Sinon.SinonStub;
+    let taskLibGetDelimitedInputStub: Sinon.SinonStub;
+    let taskLibGetFollowSourcedFilesInputStub: Sinon.SinonStub;
+    let taskLibGetIgnoredErrorCodesInputStub: Sinon.SinonStub;
     let taskLibSetResultStub: Sinon.SinonStub;
     let taskLibWarningStub: Sinon.SinonStub;
-    const format = 'junit';
-    const formatInputKey = 'format';
     const targetFiles = '**/*sh';
     const targetFilesInputKey = 'targetFiles';
+    const followSourcedFiles = false;
+    const followSourcedFilesInputKey = 'followSourcedFiles';
+    const ignoredErrorCodes = [];
+    const ignoredErrorCodesInputKey = 'ignoredErrorCodes';
+    const format = 'junit';
+    const formatInputKey = 'format';
 
     setup(() => {
         taskLibDebugStub = Sinon.stub(taskLib, 'debug');
@@ -28,6 +36,10 @@ suite('task', () => {
         taskLibGetInputStub = Sinon.stub(taskLib, 'getInput');
         taskLibGetInputStub.withArgs(formatInputKey).callsFake(() => format);
         taskLibGetInputStub.withArgs(targetFilesInputKey).callsFake(() => targetFiles);
+        taskLibGetBoolInputStub = Sinon.stub(taskLib, 'getBoolInput');
+        taskLibGetFollowSourcedFilesInputStub = taskLibGetBoolInputStub.withArgs(followSourcedFilesInputKey).callsFake(() => followSourcedFiles);
+        taskLibGetDelimitedInputStub = Sinon.stub(taskLib, 'getDelimitedInput');
+        taskLibGetIgnoredErrorCodesInputStub = taskLibGetDelimitedInputStub.withArgs(ignoredErrorCodesInputKey, '\n').callsFake(() => ignoredErrorCodes);
         taskLibSetResultStub = Sinon.stub(taskLib, 'setResult');
         taskLibWarningStub = Sinon.stub(taskLib, 'warning');
     });
@@ -37,15 +49,20 @@ suite('task', () => {
     });
 
     suite('input config', () => {
-        // test('Should configure format input correctly', async () => {
-        //     await task.run();
-        //     assert.isTrue(getInputStub.calledWithExactly(formatInputKey, true));
-        // });
-
         test('Should configure targetFiles input correctly', async () => {
             await task.run();
             assert.isTrue(taskLibGetInputStub.calledWithExactly(targetFilesInputKey, true));
         });
+
+        test('Should configure followSourcedFiles input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetBoolInputStub.calledWithExactly(followSourcedFilesInputKey, true));
+        });
+
+        // test('Should configure format input correctly', async () => {
+        //     await task.run();
+        //     assert.isTrue(getInputStub.calledWithExactly(formatInputKey, true));
+        // });
     });
 
     suite('run', () => {
@@ -87,11 +104,13 @@ suite('task', () => {
             const installingShellCheckDebugMessage = 'ShellCheck not found. Installing now...';
             let pathNormalizeStub: Sinon.SinonStub;
             let toolRunnerArgStub: Sinon.SinonStub;
+            let toolRunnerArgIfStub: Sinon.SinonStub;
             let toolRunnerExecStub: Sinon.SinonStub;
             let probeShellCheckStub: Sinon.SinonStub;
 
             const toolRunnerStub: toolRunner.ToolRunner = <toolRunner.ToolRunner> {
                 arg: (_val) => null,
+                argIf: (_condition, _val) => null,
                 exec: (_options) => null
             };
 
@@ -102,6 +121,7 @@ suite('task', () => {
                 taskLibFindMatchStub.callsFake(() => scripts);
                 Sinon.stub(taskLib, 'tool').callsFake(() => toolRunnerStub);
                 toolRunnerArgStub = Sinon.stub(toolRunnerStub, 'arg').callsFake(() => toolRunnerStub);
+                toolRunnerArgIfStub = Sinon.stub(toolRunnerStub, 'argIf').callsFake(() => toolRunnerStub);
                 toolRunnerExecStub = Sinon.stub(toolRunnerStub, 'exec').callsFake(() => 0);
                 probeShellCheckStub = taskLibWhichStub.withArgs(shellCheckExecutable, false);
             });
@@ -146,6 +166,36 @@ suite('task', () => {
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(firstScript));
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(secondScript));
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(thirdScript));
+            });
+
+            test('Should include -x arg when followSourcedFiles is set to true', async () => {
+                taskLibGetFollowSourcedFilesInputStub.callsFake(() => true);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(true, '-x'));
+            });
+
+            test('Should not include -x arg when followSourcedFiles is set to false', async () => {
+                taskLibGetFollowSourcedFilesInputStub.callsFake(() => false);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(false, '-x'));
+            });
+
+            test('Should not include any ignore args when ignoredErrorCodes is unset', async () => {
+                taskLibGetIgnoredErrorCodesInputStub.callsFake(() => []);
+                await task.run();
+                assert.isFalse(toolRunnerArgStub.calledWith('-e'));
+            });
+
+            test('Should include ignore arg and error code when ignoredErrorCodes is set', async () => {
+                const firstErrorCode = 'SC2059';
+                const secondErrorCode = 'SC2011';
+                taskLibGetIgnoredErrorCodesInputStub.callsFake(() => [ firstErrorCode, secondErrorCode ]);
+                await task.run();
+                let argCallCountStart = scripts.length;
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-e'));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(firstErrorCode));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-e'));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(secondErrorCode));
             });
 
             test('Should complete the task successfully when ShellCheck scan passes', async () => {
