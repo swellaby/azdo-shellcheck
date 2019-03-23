@@ -32,12 +32,9 @@ steps:
   displayName: 'Publish coverage to Codecov'
 
 - script: |
-    git config --list
-    git config --global --list
-    git config --system --list
     git checkout master
-    git config user.name "swellbot"
-    git config user.email "opensource@swellaby.com"
+    git config user.name swellbot
+    git config user.email opensource@swellaby.com
     npm -f version $(packageBumpType) -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     export PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version);")
     echo "##vso[task.setVariable variable=packageVersion]$PACKAGE_VERSION"
