@@ -1,6 +1,11 @@
 # azdo-shellcheck
-ShellCheck extension for Azure DevOps
+[ShellCheck][shellcheck-repo] extension for Azure DevOps.  
 
+Functional, but still in an early preview/beta.   
+
+[![Version Badge][version-badge]][ext-url]
+[![Installs Badge][installs-badge]][ext-url]
+[![Rating Badge][rating-badge]][ext-url]
 [![License Badge][license-badge]][license-url]
 
 [![Linux CI Badge][linux-ci-badge]][linux-ci-url]
@@ -10,7 +15,10 @@ ShellCheck extension for Azure DevOps
 [![Test Results Badge][tests-badge]][tests-url]
 [![Coverage Badge][coverage-badge]][coverage-url]
 
-[version-badge]: https://img.shields.io/crates/v/rusty-hook.svg?style=flat-square
+[installs-badge]: https://img.shields.io/vscode-marketplace/d/swellaby.shellcheck.svg?style=flat-square
+[version-badge]: https://img.shields.io/vscode-marketplace/v/swellaby.shellcheck.svg?style=flat-square&label=marketplace
+[rating-badge]: https://img.shields.io/vscode-marketplace/r/swellaby.shellcheck.svg?style=flat-square
+[ext-url]: https://marketplace.visualstudio.com/items?itemName=swellaby.shellcheck
 [license-url]: ./LICENSE
 [license-badge]: https://img.shields.io/github/license/swellaby/azdo-shellcheck.svg?style=flat-square&color=blue
 [downloads-badge]: https://img.shields.io/crates/d/rusty-hook.svg?style=flat-square
@@ -24,4 +32,5 @@ ShellCheck extension for Azure DevOps
 [coverage-url]: https://codecov.io/gh/swellaby/azdo-shellcheck/branch/master
 [tests-badge]: https://img.shields.io/azure-devops/tests/swellaby/opensource/58/master.svg?label=unit%20tests&style=flat-square
 [tests-url]: https://dev.azure.com/swellaby/OpenSource/_build/latest?definitionId=58&view=ms.vss-test-web.build-test-results-tab
+[shellcheck-repo]: https://github.com/koalaman/shellcheck
 [contributing]: .github/CONTRIBUTING.md

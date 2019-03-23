@@ -1,7 +1,7 @@
 {
   "name": "azdo-shellcheck",
   "description": "Azure DevOps extension for ShellCheck",
-  "version": "0.0.11",
+  "version": "0.1.3",
   "license": "MIT",
   "private": true,
   "repository": {
@@ -65,9 +65,10 @@
     "pretask:upload": "npm run prepackage:ext",
     "task:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
     "task:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
+    "version:bump:tasks": "vsts-bump src/tasks/**/task.json",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm run build",
-    "version:bump:tasks": "vsts-bump src/tasks/**/task.json"
+    "run:local": "npm run transpile && node src/tasks/shellcheck/runner.js"
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^2.8.0",
@@ -81,7 +82,7 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.11.4",
+    "@types/node": "^11.11.5",
     "@types/sinon": "^7.0.10",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
@@ -96,7 +97,7 @@
     "opn-cli": "^4.0.0",
     "replace-in-file": "^3.4.4",
     "rimraf": "^2.6.3",
-    "sinon": "^7.2.7",
+    "sinon": "^7.3.0",
     "tfx-cli": "^0.6.4",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000",
