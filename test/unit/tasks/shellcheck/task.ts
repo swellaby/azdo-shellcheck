@@ -7,6 +7,8 @@ import taskLib = require('azure-pipelines-task-lib');
 import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 import installer = require('../../../../src/tasks/shellcheck/installer');
+import OutputFormat = require('../../../../src/tasks/shellcheck/output-format');
+import ShellDialect = require('../../../../src/tasks/shellcheck/shell-dialect');
 import task = require('../../../../src/tasks/shellcheck/task');
 
 const assert = chai.assert;
@@ -15,19 +17,41 @@ suite('task', () => {
     let taskLibDebugStub: Sinon.SinonStub;
     let taskLibFindMatchStub: Sinon.SinonStub;
     let taskLibGetInputStub: Sinon.SinonStub;
+    let taskLibGetBoolInputStub: Sinon.SinonStub;
+    let taskLibGetDelimitedInputStub: Sinon.SinonStub;
+    let taskLibGetFollowSourcedFilesInputStub: Sinon.SinonStub;
+    let taskLibGetIgnoredErrorCodesInputStub: Sinon.SinonStub;
+    let taskLibGetOutputFormatInputStub: Sinon.SinonStub;
+    let taskLibGetShellDialectInputStub: Sinon.SinonStub;
+    let taskLibGetUseRCFilesInputStub: Sinon.SinonStub;
     let taskLibSetResultStub: Sinon.SinonStub;
     let taskLibWarningStub: Sinon.SinonStub;
-    const format = 'junit';
-    const formatInputKey = 'format';
     const targetFiles = '**/*sh';
     const targetFilesInputKey = 'targetFiles';
+    const followSourcedFiles = false;
+    const followSourcedFilesInputKey = 'followSourcedFiles';
+    const ignoredErrorCodes = [];
+    const ignoredErrorCodesInputKey = 'ignoredErrorCodes';
+    const outputFormat = 'tty';
+    const outputFormatInputKey = 'outputFormat';
+    const shellDialect = 'default';
+    const shellDialectInputKey = 'shellDialect';
+    const useRcFiles = true;
+    const useRcFilesInputKey = 'useRcFiles';
 
     setup(() => {
         taskLibDebugStub = Sinon.stub(taskLib, 'debug');
         taskLibFindMatchStub = Sinon.stub(taskLib, 'findMatch').callsFake(() => []);
         taskLibGetInputStub = Sinon.stub(taskLib, 'getInput');
-        taskLibGetInputStub.withArgs(formatInputKey).callsFake(() => format);
+        taskLibGetInputStub.withArgs(outputFormatInputKey).callsFake(() => outputFormat);
         taskLibGetInputStub.withArgs(targetFilesInputKey).callsFake(() => targetFiles);
+        taskLibGetBoolInputStub = Sinon.stub(taskLib, 'getBoolInput');
+        taskLibGetFollowSourcedFilesInputStub = taskLibGetBoolInputStub.withArgs(followSourcedFilesInputKey).callsFake(() => followSourcedFiles);
+        taskLibGetUseRCFilesInputStub = taskLibGetBoolInputStub.withArgs(useRcFilesInputKey).callsFake(() => useRcFiles);
+        taskLibGetDelimitedInputStub = Sinon.stub(taskLib, 'getDelimitedInput');
+        taskLibGetIgnoredErrorCodesInputStub = taskLibGetDelimitedInputStub.withArgs(ignoredErrorCodesInputKey, '\n').callsFake(() => ignoredErrorCodes);
+        taskLibGetOutputFormatInputStub = taskLibGetInputStub.withArgs(outputFormatInputKey).callsFake(() => outputFormat);
+        taskLibGetShellDialectInputStub = taskLibGetInputStub.withArgs(shellDialectInputKey).callsFake(() => shellDialect);
         taskLibSetResultStub = Sinon.stub(taskLib, 'setResult');
         taskLibWarningStub = Sinon.stub(taskLib, 'warning');
     });
@@ -37,14 +61,34 @@ suite('task', () => {
     });
 
     suite('input config', () => {
-        // test('Should configure format input correctly', async () => {
-        //     await task.run();
-        //     assert.isTrue(getInputStub.calledWithExactly(formatInputKey, true));
-        // });
-
         test('Should configure targetFiles input correctly', async () => {
             await task.run();
             assert.isTrue(taskLibGetInputStub.calledWithExactly(targetFilesInputKey, true));
+        });
+
+        test('Should configure followSourcedFiles input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetBoolInputStub.calledWithExactly(followSourcedFilesInputKey, true));
+        });
+
+        test('Should configure ignoredErrorCodes input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetDelimitedInputStub.calledWithExactly(ignoredErrorCodesInputKey, '\n', false));
+        });
+
+        test('Should configure outputFormat input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetInputStub.calledWithExactly(outputFormatInputKey, true));
+        });
+
+        test('Should configure shellDialect input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetInputStub.calledWithExactly(shellDialectInputKey, true));
+        });
+
+        test('Should configure useRcFiles input correctly', async () => {
+            await task.run();
+            assert.isTrue(taskLibGetBoolInputStub.calledWithExactly(useRcFilesInputKey, true));
         });
     });
 
@@ -87,11 +131,13 @@ suite('task', () => {
             const installingShellCheckDebugMessage = 'ShellCheck not found. Installing now...';
             let pathNormalizeStub: Sinon.SinonStub;
             let toolRunnerArgStub: Sinon.SinonStub;
+            let toolRunnerArgIfStub: Sinon.SinonStub;
             let toolRunnerExecStub: Sinon.SinonStub;
             let probeShellCheckStub: Sinon.SinonStub;
 
             const toolRunnerStub: toolRunner.ToolRunner = <toolRunner.ToolRunner> {
                 arg: (_val) => null,
+                argIf: (_condition, _val) => null,
                 exec: (_options) => null
             };
 
@@ -102,6 +148,7 @@ suite('task', () => {
                 taskLibFindMatchStub.callsFake(() => scripts);
                 Sinon.stub(taskLib, 'tool').callsFake(() => toolRunnerStub);
                 toolRunnerArgStub = Sinon.stub(toolRunnerStub, 'arg').callsFake(() => toolRunnerStub);
+                toolRunnerArgIfStub = Sinon.stub(toolRunnerStub, 'argIf').callsFake(() => toolRunnerStub);
                 toolRunnerExecStub = Sinon.stub(toolRunnerStub, 'exec').callsFake(() => 0);
                 probeShellCheckStub = taskLibWhichStub.withArgs(shellCheckExecutable, false);
             });
@@ -146,6 +193,122 @@ suite('task', () => {
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(firstScript));
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(secondScript));
                 assert.isTrue(toolRunnerArgStub.calledWithExactly(thirdScript));
+            });
+
+            test('Should include -x arg when followSourcedFiles is set to true', async () => {
+                taskLibGetFollowSourcedFilesInputStub.callsFake(() => true);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(true, '-x'));
+            });
+
+            test('Should not include -x arg when followSourcedFiles is set to false', async () => {
+                taskLibGetFollowSourcedFilesInputStub.callsFake(() => false);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(false, '-x'));
+            });
+
+            test('Should include --norc arg when useRcFiles is set to false', async () => {
+                taskLibGetUseRCFilesInputStub.callsFake(() => false);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(true, '--norc'));
+            });
+
+            test('Should not include --norc arg when useRcFiles is set to true', async () => {
+                taskLibGetUseRCFilesInputStub.callsFake(() => true);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(false, '--norc'));
+            });
+
+            test('Should not include any ignore args when ignoredErrorCodes is unset', async () => {
+                taskLibGetIgnoredErrorCodesInputStub.callsFake(() => []);
+                await task.run();
+                assert.isFalse(toolRunnerArgStub.calledWith('-e'));
+            });
+
+            test('Should include ignore arg and error code when ignoredErrorCodes is set', async () => {
+                const firstErrorCode = 'SC2059';
+                const secondErrorCode = 'SC2011';
+                taskLibGetIgnoredErrorCodesInputStub.callsFake(() => [ firstErrorCode, secondErrorCode ]);
+                await task.run();
+                let argCallCountStart = scripts.length;
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-e'));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(firstErrorCode));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-e'));
+                assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(secondErrorCode));
+            });
+
+            suite('outputFormat Args', () => {
+                test('Should include the correct outputFormat arg when format input is tty', async () => {
+                    taskLibGetOutputFormatInputStub.callsFake(() => OutputFormat.tty);
+                    await task.run();
+                    let argCallCountStart = scripts.length;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-f'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(OutputFormat.tty));
+                });
+
+                test('Should include the correct outputFormat arg when format input is checkstyle', async () => {
+                    taskLibGetOutputFormatInputStub.callsFake(() => OutputFormat.checkstyle);
+                    await task.run();
+                    let argCallCountStart = scripts.length;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-f'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(OutputFormat.checkstyle));
+                });
+
+                test('Should include the correct outputFormat arg when format input is gcc', async () => {
+                    taskLibGetOutputFormatInputStub.callsFake(() => OutputFormat.gcc);
+                    await task.run();
+                    let argCallCountStart = scripts.length;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-f'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(OutputFormat.gcc));
+                });
+
+                test('Should include the correct outputFormat arg when format input is json', async () => {
+                    taskLibGetOutputFormatInputStub.callsFake(() => OutputFormat.json);
+                    await task.run();
+                    let argCallCountStart = scripts.length;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-f'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(OutputFormat.json));
+                });
+            });
+
+            suite('shellDialect Args', () => {
+                test('Should not override default behavior shellDialect input is default', async () => {
+                    taskLibGetShellDialectInputStub.callsFake(() => ShellDialect.default);
+                    await task.run();
+                    assert.isFalse(toolRunnerArgStub.calledWithExactly('-s'));
+                });
+
+                test('Should include the correct shellDialect arg when dialect input is sh', async () => {
+                    taskLibGetShellDialectInputStub.callsFake(() => ShellDialect.sh);
+                    await task.run();
+                    let argCallCountStart = scripts.length + 2;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-s'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(ShellDialect.sh));
+                });
+
+                test('Should include the correct shellDialect arg when dialect input is bash', async () => {
+                    taskLibGetShellDialectInputStub.callsFake(() => ShellDialect.bash);
+                    await task.run();
+                    let argCallCountStart = scripts.length + 2;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-s'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(ShellDialect.bash));
+                });
+
+                test('Should include the correct shellDialect arg when dialect input is dash', async () => {
+                    taskLibGetShellDialectInputStub.callsFake(() => ShellDialect.dash);
+                    await task.run();
+                    let argCallCountStart = scripts.length + 2;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-s'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(ShellDialect.dash));
+                });
+
+                test('Should include the correct shellDialect arg when dialect input is ksh', async () => {
+                    taskLibGetShellDialectInputStub.callsFake(() => ShellDialect.ksh);
+                    await task.run();
+                    let argCallCountStart = scripts.length + 2;
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly('-s'));
+                    assert.isTrue(toolRunnerArgStub.getCall(argCallCountStart++).calledWithExactly(ShellDialect.ksh));
+                });
             });
 
             test('Should complete the task successfully when ShellCheck scan passes', async () => {

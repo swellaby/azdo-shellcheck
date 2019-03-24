@@ -40,8 +40,6 @@ steps:
     echo "##vso[task.setVariable variable=packageVersion]$PACKAGE_VERSION"
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
-    git config --list
-    # -c http.extraheader="AUTHORIZATION: basic $(pat)"
     git commit -n -m "chore: Bumped to version $PACKAGE_VERSION from release pipeline $(succinctAllSkipTokens)"
     git push https://$(pat)@github.com/swellaby/azdo-shellcheck.git
   displayName: 'Package extension'

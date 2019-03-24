@@ -20,6 +20,63 @@
       "defaultValue": "**/*.sh",
       "required": true,
       "helpMarkDown": "The script files to check. Yes you can use globs!"
+    },
+    {
+      "name": "followSourcedFiles",
+      "type": "boolean",
+      "label": "Follow Sourced Files",
+      "defaultValue": false,
+      "required": true,
+      "helpMarkDown": "Enable this to follow all sourced includes. See the [docs](https://github.com/koalaman/shellcheck/wiki/Integration#decide-whether-you-want-to-follow-sourced-files-that-are-not-specified-as-input) for more information"
+    },
+    {
+      "name": "ignoredErrorCodes",
+      "type": "multiLine",
+      "label": "Error Codes To Ignore",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "List the ShellCheck error codes you want to ignore (i.e. SC2059), with one error code per line. See the [docs](https://github.com/koalaman/shellcheck/wiki/Ignore#ignoring-errors) for more information",
+      "properties": {
+        "rows": "3",
+        "maxLength": "1500"
+      }
+    },
+    {
+      "name": "outputFormat",
+      "type": "picklist",
+      "label": "Output Format",
+      "defaultValue": "tty",
+      "required": true,
+      "helpMarkDown": "Specify the output format. See the [docs](https://github.com/koalaman/shellcheck/wiki/Integration#pick-the-output-format-that-makes-your-life-easier) for more information",
+      "options": {
+        "tty": "tty (default)",
+        "checkstyle": "checkstyle",
+        "gcc": "gcc",
+        "json": "json"
+      }
+    },
+    {
+      "name": "shellDialect",
+      "type": "picklist",
+      "label": "Shell Dialect",
+      "defaultValue": "default",
+      "required": true,
+      "helpMarkDown": "Specify the shell dialect. See the [docs](https://github.com/koalaman/shellcheck/wiki/Integration#decide-whether-you-want-to-specify-a-shell-dialect) for more information",
+      "options": {
+        "default": "default",
+        "sh": "sh",
+        "bash": "bash",
+        "dash": "dash",
+        "ksh": "ksh"
+      }
+    },
+    {
+      "name": "useRcFiles",
+      "type": "boolean",
+      "label": "Utilize shellcheckrc files",
+      "defaultValue": true,
+      "required": true,
+      "helpMarkDown": "Look for and use .shellcheckrc files [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
     }
   ],
   "execution": {
