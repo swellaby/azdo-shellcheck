@@ -1,6 +1,7 @@
 {
   "extends": "@swellaby/nyc-config",
   "exclude": [
-    "src/**/runner*"
+    "src/**/runner*",
+    "src/tasks/shellcheck/inputs*"
   ]
 }
