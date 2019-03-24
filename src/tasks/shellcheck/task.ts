@@ -3,6 +3,7 @@
 import path = require('path');
 import taskLib = require('azure-pipelines-task-lib');
 
+import IInputs = require('./inputs');
 import installer = require('./installer');
 import OutputFormat = require('./output-format');
 import ShellDialect = require('./shell-dialect');
@@ -13,53 +14,39 @@ const handleShellCheckScanFailure = () => {
     taskLib.setResult(taskLib.TaskResult.Failed, 'ShellCheck scan failed! Check the logs for violation details.');
 };
 
-const getToolRunner = (
-    scriptFiles: string[],
-    followSourcedFiles: boolean,
-    ignoredErrorCodes: string[],
-    outputFormat: OutputFormat,
-    shellDialect: ShellDialect,
-    useRcFiles: boolean
-) => {
+const getToolRunner = (inputs: IInputs) => {
     let toolRunner = taskLib.tool(shellcheckExecutable);
     const rootDir = taskLib.cwd();
     const rootPrefix = path.normalize(`${rootDir}/`);
 
-    scriptFiles.forEach(script => {
+    inputs.scriptFiles.forEach(script => {
         toolRunner = toolRunner.arg(script.replace(rootPrefix, ''));
     });
 
-    toolRunner = toolRunner.argIf(followSourcedFiles, '-x');
-    toolRunner = toolRunner.argIf(!useRcFiles, '--norc');
+    toolRunner = toolRunner.argIf(inputs.followSourcedFiles, '-x');
+    toolRunner = toolRunner.argIf(inputs.checkSourcedFiles, '-a');
+    toolRunner = toolRunner.argIf(!inputs.useRcFiles, '--norc');
 
-    ignoredErrorCodes.forEach(errorCode => {
+    inputs.ignoredErrorCodes.forEach(errorCode => {
         toolRunner = toolRunner.arg('-e').arg(errorCode);
     });
 
-    toolRunner = toolRunner.arg('-f').arg(outputFormat);
-    if (shellDialect !== ShellDialect.default) {
-        toolRunner = toolRunner.arg('-s').arg(shellDialect);
+    toolRunner = toolRunner.arg('-f').arg(inputs.outputFormat);
+    if (inputs.shellDialect !== ShellDialect.default) {
+        toolRunner = toolRunner.arg('-s').arg(inputs.shellDialect);
     }
 
     return toolRunner;
 };
 
-const runShellCheck = async (
-    scriptFiles: string[],
-    followSourcedFiles: boolean,
-    ignoredErrorCodes: string[],
-    outputFormat: OutputFormat,
-    shellDialect: ShellDialect,
-    useRcFiles: boolean
-) => {
+const runShellCheck = async (inputs: IInputs) => {
     try {
         if (!taskLib.which(shellcheckExecutable, false)) {
             taskLib.debug('ShellCheck not found. Installing now...');
             await installer.installShellCheck();
         }
 
-        const toolRunner = getToolRunner(scriptFiles, followSourcedFiles, ignoredErrorCodes, outputFormat, shellDialect, useRcFiles);
-        const shellCheckResult = await toolRunner.exec();
+        const shellCheckResult = await getToolRunner(inputs).exec();
         if (shellCheckResult !== 0) {
             return handleShellCheckScanFailure();
         }
@@ -71,21 +58,37 @@ const runShellCheck = async (
     }
 };
 
+const getInputs = (): IInputs => {
+    const targetFiles = taskLib.getInput('targetFiles', true);
+    const followSourcedFiles = taskLib.getBoolInput('followSourcedFiles', true);
+    const checkSourcedFiles = taskLib.getBoolInput('checkSourcedFiles', true);
+    const ignoredErrorCodes = taskLib.getDelimitedInput('ignoredErrorCodes', '\n', false);
+    const outputFormat = OutputFormat[taskLib.getInput('outputFormat', true)];
+    const shellDialect = ShellDialect[taskLib.getInput('shellDialect', true)];
+    const useRcFiles = taskLib.getBoolInput('useRcFiles', true);
+    const scriptFiles = taskLib.findMatch(null, targetFiles);
+
+    return <IInputs>{
+        scriptFiles,
+        targetFiles,
+        followSourcedFiles,
+        checkSourcedFiles,
+        ignoredErrorCodes,
+        outputFormat,
+        shellDialect,
+        useRcFiles
+    };
+};
+
 export const run = async () => {
     try {
-        const targetFiles = taskLib.getInput('targetFiles', true);
-        const followSourcedFiles = taskLib.getBoolInput('followSourcedFiles', true);
-        const ignoredErrorCodes = taskLib.getDelimitedInput('ignoredErrorCodes', '\n', false);
-        const outputFormat = OutputFormat[taskLib.getInput('outputFormat', true)];
-        const shellDialect = ShellDialect[taskLib.getInput('shellDialect', true)];
-        const useRcFiles = taskLib.getBoolInput('useRcFiles', true);
-        const scripts = taskLib.findMatch(null, targetFiles);
+        const inputs = getInputs();
 
-        if (scripts.length === 0) {
-            return taskLib.warning(`No shell files found for input '${targetFiles}'.`);
+        if (inputs.scriptFiles.length === 0) {
+            return taskLib.warning(`No shell files found for input '${inputs.targetFiles}'.`);
         }
 
-        await runShellCheck(scripts, followSourcedFiles, ignoredErrorCodes, outputFormat, shellDialect, useRcFiles);
+        await runShellCheck(inputs);
     } catch (err) {
         taskLib.setResult(taskLib.TaskResult.Failed, 'Fatal error. Enable debugging to see error details.');
     }

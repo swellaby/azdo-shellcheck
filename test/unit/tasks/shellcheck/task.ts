@@ -20,6 +20,7 @@ suite('task', () => {
     let taskLibGetBoolInputStub: Sinon.SinonStub;
     let taskLibGetDelimitedInputStub: Sinon.SinonStub;
     let taskLibGetFollowSourcedFilesInputStub: Sinon.SinonStub;
+    let taskLibGetCheckSourcedFilesInputStub: Sinon.SinonStub;
     let taskLibGetIgnoredErrorCodesInputStub: Sinon.SinonStub;
     let taskLibGetOutputFormatInputStub: Sinon.SinonStub;
     let taskLibGetShellDialectInputStub: Sinon.SinonStub;
@@ -30,6 +31,8 @@ suite('task', () => {
     const targetFilesInputKey = 'targetFiles';
     const followSourcedFiles = false;
     const followSourcedFilesInputKey = 'followSourcedFiles';
+    const checkSourcedFiles = false;
+    const checkSourcedFilesInputKey = 'checkSourcedFiles';
     const ignoredErrorCodes = [];
     const ignoredErrorCodesInputKey = 'ignoredErrorCodes';
     const outputFormat = 'tty';
@@ -47,6 +50,7 @@ suite('task', () => {
         taskLibGetInputStub.withArgs(targetFilesInputKey).callsFake(() => targetFiles);
         taskLibGetBoolInputStub = Sinon.stub(taskLib, 'getBoolInput');
         taskLibGetFollowSourcedFilesInputStub = taskLibGetBoolInputStub.withArgs(followSourcedFilesInputKey).callsFake(() => followSourcedFiles);
+        taskLibGetCheckSourcedFilesInputStub = taskLibGetBoolInputStub.withArgs(checkSourcedFilesInputKey).callsFake(() => checkSourcedFiles);
         taskLibGetUseRCFilesInputStub = taskLibGetBoolInputStub.withArgs(useRcFilesInputKey).callsFake(() => useRcFiles);
         taskLibGetDelimitedInputStub = Sinon.stub(taskLib, 'getDelimitedInput');
         taskLibGetIgnoredErrorCodesInputStub = taskLibGetDelimitedInputStub.withArgs(ignoredErrorCodesInputKey, '\n').callsFake(() => ignoredErrorCodes);
@@ -205,6 +209,18 @@ suite('task', () => {
                 taskLibGetFollowSourcedFilesInputStub.callsFake(() => false);
                 await task.run();
                 assert.isTrue(toolRunnerArgIfStub.calledWithExactly(false, '-x'));
+            });
+
+            test('Should include -a arg when checkSourcedFiles is set to true', async () => {
+                taskLibGetCheckSourcedFilesInputStub.callsFake(() => true);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(true, '-a'));
+            });
+
+            test('Should not include -a arg when checkSourcedFiles is set to false', async () => {
+                taskLibGetCheckSourcedFilesInputStub.callsFake(() => false);
+                await task.run();
+                assert.isTrue(toolRunnerArgIfStub.calledWithExactly(false, '-a'));
             });
 
             test('Should include --norc arg when useRcFiles is set to false', async () => {

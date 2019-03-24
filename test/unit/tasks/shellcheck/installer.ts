@@ -42,7 +42,7 @@ suite('installers', () => {
     });
 
     suite('Linux installer', () => {
-        const binaryDirectoryName = 'shellcheck-stable';
+        const binaryDirectoryName = 'shellcheck-latest';
         const downloadDirectory = '/foo/bar';
         const tempRoot = '/tmp';
         const binaryLocation = `${tempRoot}/${binaryDirectoryName}`;
@@ -74,7 +74,7 @@ suite('installers', () => {
 
         test('Should install correctly on 64-bit architecture', async () => {
             osArchStub.callsFake(() => 'x64');
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-stable.linux.x86_64.tar.xz`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-latest.linux.x86_64.tar.xz`;
             await installer.installShellCheck();
             assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl));
             assert.isTrue(toolLibPrependPathStub.calledWithExactly(binaryLocation));
@@ -82,7 +82,7 @@ suite('installers', () => {
 
         test('Should install correctly on arm 64-bit architecture', async () => {
             osArchStub.callsFake(() => 'arm64');
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-stable.linux.armv6hf.tar.xz`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-latest.linux.armv6hf.tar.xz`;
             await installer.installShellCheck();
             assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl));
             assert.isTrue(toolLibPrependPathStub.calledWithExactly(binaryLocation));
@@ -140,7 +140,7 @@ suite('installers', () => {
     });
 
     suite('Windows installer', () => {
-        const downloadFileName = 'shellcheck-stable.exe';
+        const downloadFileName = 'shellcheck-latest.exe';
         const shellcheckFileName = 'shellcheck.exe';
         const downloadDirectory = 'c:/users/me/temp';
         const downloadPath = `${downloadDirectory}/${shellcheckFileName}`;

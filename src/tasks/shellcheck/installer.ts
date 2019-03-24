@@ -16,9 +16,9 @@ const installForLinux = async () => {
     const architecture = os.arch();
     let tarballName;
     if (architecture === 'x64') {
-        tarballName = 'shellcheck-stable.linux.x86_64.tar.xz';
+        tarballName = 'shellcheck-latest.linux.x86_64.tar.xz';
     } else if (architecture === 'arm64') {
-        tarballName = 'shellcheck-stable.linux.armv6hf.tar.xz';
+        tarballName = 'shellcheck-latest.linux.armv6hf.tar.xz';
     } else {
         throw new Error(`Unsupported architecture ${architecture}`);
     }
@@ -26,7 +26,7 @@ const installForLinux = async () => {
     const downloadUrl = `${shellCheckBinaryUrlBase}/${tarballName}`;
     const tarballLocation = await toolLib.downloadTool(downloadUrl);
     const extractRoot = await toolLib.extractTar(tarballLocation);
-    toolLib.prependPath(path.join(extractRoot, 'shellcheck-stable'));
+    toolLib.prependPath(path.join(extractRoot, 'shellcheck-latest'));
 };
 
 /**
@@ -44,7 +44,7 @@ const installForMac = async () => {
  * @private
  */
 const installForWindows = async () => {
-    const downloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-stable.exe`;
+    const downloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-latest.exe`;
     const downloadLocation = await toolLib.downloadTool(downloadUrl, 'shellcheck.exe');
     toolLib.prependPath(path.parse(downloadLocation).dir);
 };

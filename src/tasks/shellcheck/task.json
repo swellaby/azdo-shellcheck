@@ -30,6 +30,14 @@
       "helpMarkDown": "Enable this to follow all sourced includes. See the [docs](https://github.com/koalaman/shellcheck/wiki/Integration#decide-whether-you-want-to-follow-sourced-files-that-are-not-specified-as-input) for more information"
     },
     {
+      "name": "checkSourcedFiles",
+      "type": "boolean",
+      "label": "Check Sourced Files",
+      "defaultValue": false,
+      "required": true,
+      "helpMarkDown": "Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
+    },
+    {
       "name": "ignoredErrorCodes",
       "type": "multiLine",
       "label": "Error Codes To Ignore",
@@ -76,7 +84,7 @@
       "label": "Utilize shellcheckrc files",
       "defaultValue": true,
       "required": true,
-      "helpMarkDown": "Look for and use .shellcheckrc files [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
+      "helpMarkDown": "Look for and use .shellcheckrc files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
     }
   ],
   "execution": {

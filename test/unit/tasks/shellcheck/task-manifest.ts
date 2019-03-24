@@ -53,7 +53,7 @@ suite('TaskManifest', () => {
         const inputs = taskManifest.inputs;
 
         test('Should have correct number of inputs', () => {
-            assert.deepEqual(6, inputs.length);
+            assert.deepEqual(7, inputs.length);
         });
 
         test('Should have correct targetFiles input configuration', () => {
@@ -78,8 +78,19 @@ suite('TaskManifest', () => {
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
         });
 
-        test('Should have correct ignoredErrorCodes input configuration', () => {
+        test('Should have correct checkSourcedFiles input configuration', () => {
             const input = inputs[2];
+            assert.deepEqual(input.name, 'checkSourcedFiles');
+            assert.deepEqual(input.type, 'boolean');
+            assert.deepEqual(input.label, 'Check Sourced Files');
+            assert.deepEqual(input.defaultValue, false);
+            assert.isTrue(input.required);
+            const expectedHelpText = 'Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information';
+            assert.deepEqual(input.helpMarkDown, expectedHelpText);
+        });
+
+        test('Should have correct ignoredErrorCodes input configuration', () => {
+            const input = inputs[3];
             assert.deepEqual(input.name, 'ignoredErrorCodes');
             assert.deepEqual(input.type, 'multiLine');
             assert.deepEqual(input.label, 'Error Codes To Ignore');
@@ -93,7 +104,7 @@ suite('TaskManifest', () => {
         });
 
         test('Should have correct outputFormat input configuration', () => {
-            const input = inputs[3];
+            const input = inputs[4];
             const options = input.options;
             assert.deepEqual(input.name, 'outputFormat');
             assert.deepEqual(input.type, 'picklist');
@@ -110,7 +121,7 @@ suite('TaskManifest', () => {
         });
 
         test('Should have correct shellDialect input configuration', () => {
-            const input = inputs[4];
+            const input = inputs[5];
             const options = input.options;
             assert.deepEqual(input.name, 'shellDialect');
             assert.deepEqual(input.type, 'picklist');
@@ -128,13 +139,14 @@ suite('TaskManifest', () => {
         });
 
         test('Should have correct useRcFiles input configuration', () => {
-            const input = inputs[5];
+            const input = inputs[6];
             assert.deepEqual(input.name, 'useRcFiles');
             assert.deepEqual(input.type, 'boolean');
             assert.deepEqual(input.label, 'Utilize shellcheckrc files');
             assert.deepEqual(input.defaultValue, true);
             assert.isTrue(input.required);
-            const expectedHelpText = 'Look for and use .shellcheckrc files [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information';
+            const expectedHelpText = 'Look for and use .shellcheckrc files. See the ' +
+                '[docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
         });
     });
