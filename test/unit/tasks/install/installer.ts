@@ -9,6 +9,7 @@ import toolLib = require('azure-pipelines-tool-lib');
 import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 import installer = require('../../../../src/tasks/install/installer');
+import ShellCheckVersion = require('../../../../src/tasks/install/shellcheck-version');
 
 const assert = chai.assert;
 
@@ -131,15 +132,20 @@ suite('installers', () => {
     });
 
     suite('Mac installer', () => {
+        let taskLibDebugStub: Sinon.SinonStub;
+        const version = 'stable';
+        const getVersionWarningMessage = (version) => `ShellCheck is installed with Homebrew on Mac. Cannot yet install custom version: ${version}`;
+
         setup(() => {
             osTypeStub.callsFake(() => 'darwin');
+            taskLibDebugStub = Sinon.stub(taskLib, 'debug');
         });
 
         test('Should bubble errors', async () => {
             const errMessage = 'brew error';
             toolRunnerExecStub.throws(new Error(errMessage));
             try {
-                await installer.installShellCheck('latest');
+                await installer.installShellCheck(version);
                 assert.isFalse(true);
             } catch (err) {
                 assert.deepEqual(err.message, errMessage);
@@ -147,13 +153,48 @@ suite('installers', () => {
         });
 
         test('Should install correctly with Homebrew', async () => {
-            await installer.installShellCheck('stable');
+            await installer.installShellCheck(version);
             assert.isTrue(taskLibToolStub.calledOnceWithExactly('brew'));
             assert.isTrue(toolRunnerArgStub.firstCall.calledWithExactly('install'));
             assert.isTrue(toolRunnerArgStub.secondCall.calledWithExactly('shellcheck'));
             assert.deepEqual(toolRunnerArgStub.callCount, 2);
             assert.deepEqual(toolRunnerExecStub.callCount, 1);
             assert.isTrue(toolRunnerExecStub.calledWithExactly(<toolRunner.IExecOptions>{ silent: true }));
+        });
+
+        test('Should not display warning for stable version', async () => {
+            await installer.installShellCheck(ShellCheckVersion.stable);
+            assert.isFalse(taskLibDebugStub.called);
+        });
+
+        test('Should display warning for latest version', async () => {
+            const version = ShellCheckVersion.latest;
+            await installer.installShellCheck(version);
+            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+        });
+
+        test('Should display warning for version 0.6.0', async () => {
+            const version = ShellCheckVersion.zeroSixZero;
+            await installer.installShellCheck(version);
+            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+        });
+
+        test('Should display warning for version 0.5.0', async () => {
+            const version = ShellCheckVersion.zeroFiveZero;
+            await installer.installShellCheck(version);
+            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+        });
+
+        test('Should display warning for version 0.4.7', async () => {
+            const version = ShellCheckVersion.zeroFourSeven;
+            await installer.installShellCheck(version);
+            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+        });
+
+        test('Should display warning for version 0.4.6', async () => {
+            const version = ShellCheckVersion.zeroFourSix;
+            await installer.installShellCheck(version);
+            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
     });
 
