@@ -41,7 +41,9 @@ const installForLinux = async (version: string) => {
  */
 const installForMac = async (version: string) => {
     if (version !== ShellCheckVersion.stable) {
-        taskLib.debug(`ShellCheck is installed with Homebrew on Mac. Cannot yet install custom version: ${version}`);
+        const messageBase = 'ShellCheck is installed with Homebrew on Mac. Installing custom versions is not yet supported on Mac agents.';
+        const messageSuffix = `To get rid of this warning, change your target version to 'stable' or switch your pipeline to a different OS`;
+        taskLib.warning(`${messageBase} Unable to install custom version: ${version}. ${messageSuffix}`);
     }
 
     await taskLib

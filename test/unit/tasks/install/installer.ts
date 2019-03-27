@@ -132,13 +132,15 @@ suite('installers', () => {
     });
 
     suite('Mac installer', () => {
-        let taskLibDebugStub: Sinon.SinonStub;
+        let taskLibWarningStub: Sinon.SinonStub;
         const version = 'stable';
-        const getVersionWarningMessage = (version) => `ShellCheck is installed with Homebrew on Mac. Cannot yet install custom version: ${version}`;
+        const messageBase = 'ShellCheck is installed with Homebrew on Mac. Installing custom versions is not yet supported on Mac agents.';
+        const messageSuffix = `To get rid of this warning, change your target version to 'stable' or switch your pipeline to a different OS`;
+        const getVersionWarningMessage = (version: string) => `${messageBase} Unable to install custom version: ${version}. ${messageSuffix}`;
 
         setup(() => {
             osTypeStub.callsFake(() => 'darwin');
-            taskLibDebugStub = Sinon.stub(taskLib, 'debug');
+            taskLibWarningStub = Sinon.stub(taskLib, 'warning');
         });
 
         test('Should bubble errors', async () => {
@@ -164,37 +166,37 @@ suite('installers', () => {
 
         test('Should not display warning for stable version', async () => {
             await installer.installShellCheck(ShellCheckVersion.stable);
-            assert.isFalse(taskLibDebugStub.called);
+            assert.isFalse(taskLibWarningStub.called);
         });
 
         test('Should display warning for latest version', async () => {
             const version = ShellCheckVersion.latest;
             await installer.installShellCheck(version);
-            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+            assert.isTrue(taskLibWarningStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.6.0', async () => {
             const version = ShellCheckVersion['0.6.0'];
             await installer.installShellCheck(version);
-            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+            assert.isTrue(taskLibWarningStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.5.0', async () => {
             const version = ShellCheckVersion['0.5.0'];
             await installer.installShellCheck(version);
-            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+            assert.isTrue(taskLibWarningStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.4.7', async () => {
             const version = ShellCheckVersion['0.4.7'];
             await installer.installShellCheck(version);
-            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+            assert.isTrue(taskLibWarningStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.4.6', async () => {
             const version = ShellCheckVersion['0.4.6'];
             await installer.installShellCheck(version);
-            assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
+            assert.isTrue(taskLibWarningStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
     });
 
