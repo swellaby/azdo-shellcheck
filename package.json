@@ -1,7 +1,7 @@
 {
   "name": "azdo-shellcheck",
   "description": "Azure DevOps extension for ShellCheck",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "license": "MIT",
   "private": true,
   "repository": {
@@ -106,10 +106,10 @@
     "replace-in-file": "^3.4.4",
     "rimraf": "^2.6.3",
     "semver": "^6.0.0",
-    "sinon": "^7.3.0",
+    "sinon": "^7.3.1",
     "tfx-cli": "^0.6.4",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000",
-    "vsts-bump": "^1.0.7"
+    "vsts-bump": "^1.0.8"
   }
 }
