@@ -5,7 +5,7 @@ const taskManifest = require('../../../../src/tasks/install/task.json');
 
 const assert = chai.assert;
 
-suite('TaskManifest', () => {
+suite('Install TaskManifest', () => {
     suite('metadata', () => {
         test('Should have correct taskId', () => {
             assert.deepEqual(taskManifest.id, '3f74db91-b37c-4602-bb92-2658c6d136f2');
@@ -71,14 +71,14 @@ suite('TaskManifest', () => {
             assert.deepEqual(optionsKeys[0], 'latest');
             assert.deepEqual(options.stable, 'stable');
             assert.deepEqual(optionsKeys[1], 'stable');
-            assert.deepEqual(options.zeroSixZero, '0.6.0');
-            assert.deepEqual(optionsKeys[2], 'zeroSixZero');
-            assert.deepEqual(options.zeroFiveZero, '0.5.0');
-            assert.deepEqual(optionsKeys[3], 'zeroFiveZero');
-            assert.deepEqual(options.zeroFourSeven, '0.4.7');
-            assert.deepEqual(optionsKeys[4], 'zeroFourSeven');
-            assert.deepEqual(options.zeroFourSix, '0.4.6');
-            assert.deepEqual(optionsKeys[5], 'zeroFourSix');
+            assert.deepEqual(options['0.6.0'], '0.6.0');
+            assert.deepEqual(optionsKeys[2], '0.6.0');
+            assert.deepEqual(options['0.5.0'], '0.5.0');
+            assert.deepEqual(optionsKeys[3], '0.5.0');
+            assert.deepEqual(options['0.4.7'], '0.4.7');
+            assert.deepEqual(optionsKeys[4], '0.4.7');
+            assert.deepEqual(options['0.4.6'], '0.4.6');
+            assert.deepEqual(optionsKeys[5], '0.4.6');
         });
     });
 

@@ -174,25 +174,25 @@ suite('installers', () => {
         });
 
         test('Should display warning for version 0.6.0', async () => {
-            const version = ShellCheckVersion.zeroSixZero;
+            const version = ShellCheckVersion['0.6.0'];
             await installer.installShellCheck(version);
             assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.5.0', async () => {
-            const version = ShellCheckVersion.zeroFiveZero;
+            const version = ShellCheckVersion['0.5.0'];
             await installer.installShellCheck(version);
             assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.4.7', async () => {
-            const version = ShellCheckVersion.zeroFourSeven;
+            const version = ShellCheckVersion['0.4.7'];
             await installer.installShellCheck(version);
             assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });
 
         test('Should display warning for version 0.4.6', async () => {
-            const version = ShellCheckVersion.zeroFourSix;
+            const version = ShellCheckVersion['0.4.6'];
             await installer.installShellCheck(version);
             assert.isTrue(taskLibDebugStub.calledOnceWithExactly(getVersionWarningMessage(version)));
         });

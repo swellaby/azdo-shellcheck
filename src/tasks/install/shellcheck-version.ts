@@ -8,10 +8,10 @@
 enum ShellCheckVersion {
     latest = 'latest',
     stable = 'stable',
-    zeroSixZero = 'v0.6.0',
-    zeroFiveZero = 'v0.5.0',
-    zeroFourSeven = 'v0.4.7',
-    zeroFourSix = 'v0.4.6'
+    '0.6.0' = 'v0.6.0',
+    '0.5.0' = 'v0.5.0',
+    '0.4.7' = 'v0.4.7',
+    '0.4.6' = 'v0.4.6'
 }
 
 export = ShellCheckVersion;
