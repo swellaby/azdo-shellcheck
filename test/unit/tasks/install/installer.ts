@@ -62,7 +62,6 @@ suite('installers', () => {
         const binTargetDirectory = `${extractRoot}/${binaryDirectoryName}`;
         let osArchStub: Sinon.SinonStub;
         let pathJoinStub: Sinon.SinonStub;
-        // let toolLibExtractTarStub: Sinon.SinonStub;
         let taskLibGetVariableStub: Sinon.SinonStub;
         let taskLibMkdirPStub: Sinon.SinonStub;
         const expectedTarArgs = [ 'xC', extractRoot, '-f', downloadDirectory ];
@@ -77,8 +76,6 @@ suite('installers', () => {
             taskLibGetVariableStub = Sinon.stub(taskLib, 'getVariable');
             taskLibGetVariableStub.withArgs('Agent.TempDirectory').callsFake(() => tempDirectoryPath);
             taskLibMkdirPStub = Sinon.stub(taskLib, 'mkdirP');
-            // toolLibExtractTarStub = Sinon.stub(toolLib, 'extractTar');
-            // toolLibExtractTarStub.withArgs(downloadDirectory).callsFake(() => Promise.resolve(tempRoot));
         });
 
         test('Should throw error on unsupported architecture', async () => {
