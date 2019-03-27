@@ -15,6 +15,9 @@ Functional, but still in an early preview/beta.
 [![Test Results Badge][tests-badge]][tests-url]
 [![Coverage Badge][coverage-badge]][coverage-url]
 
+## Icon Credits
+The task and extension icons were sourced from the shellcheck.net icon in https://github.com/koalaman/shellcheck.net
+
 [installs-badge]: https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/swellaby.shellcheck.svg?style=flat-square
 [version-badge]: https://img.shields.io/vscode-marketplace/v/swellaby.shellcheck.svg?style=flat-square&label=marketplace
 [rating-badge]: https://img.shields.io/vscode-marketplace/r/swellaby.shellcheck.svg?style=flat-square
