@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "shellcheck",
   "name": "ShellCheck",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "publisher": "Swellaby",
   "description": "ShellCheck Extension",
   "public": true,
@@ -75,6 +75,17 @@
       ],
       "properties": {
         "name": ".publish/tasks/shellcheck"
+      }
+    },
+    {
+      "id": "install-shellcheck",
+      "description": "Pipeline task to install ShellCheck",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": ".publish/tasks/install"
       }
     }
   ]

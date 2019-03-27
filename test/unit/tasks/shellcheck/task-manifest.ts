@@ -5,7 +5,7 @@ const taskManifest = require('../../../../src/tasks/shellcheck/task.json');
 
 const assert = chai.assert;
 
-suite('TaskManifest', () => {
+suite('ShellCheck TaskManifest', () => {
     suite('metadata', () => {
         test('Should have correct taskId', () => {
             assert.deepEqual(taskManifest.id, '7d357064-b610-44c0-b52c-734fdf665a7c');
@@ -105,7 +105,6 @@ suite('TaskManifest', () => {
 
         test('Should have correct outputFormat input configuration', () => {
             const input = inputs[4];
-            const options = input.options;
             assert.deepEqual(input.name, 'outputFormat');
             assert.deepEqual(input.type, 'picklist');
             assert.deepEqual(input.label, 'Output Format');
@@ -114,15 +113,21 @@ suite('TaskManifest', () => {
             const expectedHelpText = 'Specify the output format. See the [docs]' +
                 '(https://github.com/koalaman/shellcheck/wiki/Integration#pick-the-output-format-that-makes-your-life-easier) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
+            const options = input.options;
+            const optionsKeys = Object.keys(options);
+            assert.deepEqual(optionsKeys.length, 4);
             assert.deepEqual(options.tty, 'tty (default)');
+            assert.deepEqual(optionsKeys[0], 'tty');
             assert.deepEqual(options.checkstyle, 'checkstyle');
+            assert.deepEqual(optionsKeys[1], 'checkstyle');
             assert.deepEqual(options.gcc, 'gcc');
+            assert.deepEqual(optionsKeys[2], 'gcc');
             assert.deepEqual(options.json, 'json');
+            assert.deepEqual(optionsKeys[3], 'json');
         });
 
         test('Should have correct shellDialect input configuration', () => {
             const input = inputs[5];
-            const options = input.options;
             assert.deepEqual(input.name, 'shellDialect');
             assert.deepEqual(input.type, 'picklist');
             assert.deepEqual(input.label, 'Shell Dialect');
@@ -131,11 +136,19 @@ suite('TaskManifest', () => {
             const expectedHelpText = 'Specify the shell dialect. See the [docs]' +
                 '(https://github.com/koalaman/shellcheck/wiki/Integration#decide-whether-you-want-to-specify-a-shell-dialect) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
+            const options = input.options;
+            const optionsKeys = Object.keys(options);
+            assert.deepEqual(optionsKeys.length, 5);
             assert.deepEqual(options.default, 'default');
+            assert.deepEqual(optionsKeys[0], 'default');
             assert.deepEqual(options.sh, 'sh');
+            assert.deepEqual(optionsKeys[1], 'sh');
             assert.deepEqual(options.bash, 'bash');
+            assert.deepEqual(optionsKeys[2], 'bash');
             assert.deepEqual(options.dash, 'dash');
+            assert.deepEqual(optionsKeys[3], 'dash');
             assert.deepEqual(options.ksh, 'ksh');
+            assert.deepEqual(optionsKeys[4], 'ksh');
         });
 
         test('Should have correct useRcFiles input configuration', () => {

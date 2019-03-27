@@ -1,7 +1,7 @@
 {
   "name": "azdo-shellcheck",
   "description": "Azure DevOps extension for ShellCheck",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "license": "MIT",
   "private": true,
   "repository": {
@@ -54,21 +54,29 @@
     "coverage:unit": "nyc --report-dir .coverage/unit --check-coverage false npm run test:unit",
     "coverage:unit:enforce": "nyc --report-dir .coverage/unit npm run test:unit",
     "coverage:unit:open": "npm run coverage:unit && opn .coverage/unit/index.html",
-    "package:deps": "npm run package:deps:shellcheck",
+    "package:deps": "npm run package:deps:shellcheck && npm run package:deps:install",
     "package:deps:shellcheck": "copy-node-modules . .publish/tasks/shellcheck",
+    "package:deps:install": "copy-node-modules . .publish/tasks/install",
     "prepackage:tasks": "npm run version:bump:tasks",
-    "package:tasks": "npm run package:task:shellcheck",
+    "package:tasks": "npm run package:task:shellcheck && npm run package:task:install",
     "package:task:shellcheck": "mkdirp .publish/tasks/shellcheck && ncp src/tasks/shellcheck/ .publish/tasks/shellcheck/ --filter=\"^((?!(\\.(map|ts))).)+$\"",
+    "package:task:install": "mkdirp .publish/tasks/install && ncp src/tasks/install/ .publish/tasks/install/ --filter=\"^((?!(\\.(map|ts))).)+$\"",
     "prepackage:ext": "npm run clean:package && npm run transpile && npm run package:deps && npm run package:tasks",
     "package:ext": "tfx extension create --manifest-globs vss-extension.json --rev-version --output-path .vsix/",
     "tfx:login": "tfx login",
-    "pretask:upload": "npm run prepackage:ext",
-    "task:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
-    "task:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
+    "pretask:shellcheck:upload": "npm run pretasks:upload",
+    "pretask:install:upload": "npm run pretasks:upload",
+    "pretasks:upload": "npm run prepackage:ext",
+    "tasks:upload": "npm run task:shellcheck:upload && npm run task:install:upload",
+    "task:shellcheck:upload": "tfx build tasks upload --task-path .publish/tasks/shellcheck",
+    "task:shellcheck:delete": "tfx build tasks delete --task-id 7d357064-b610-44c0-b52c-734fdf665a7c",
+    "task:install:upload": "tfx build tasks upload --task-path .publish/tasks/install",
+    "task:install:delete": "tfx build tasks delete --task-id 3f74db91-b37c-4602-bb92-2658c6d136f2",
     "version:bump:tasks": "vsts-bump src/tasks/**/task.json",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm run build",
-    "run:local": "npm run transpile && node src/tasks/shellcheck/runner.js"
+    "run:shellcheck:local": "npm run transpile && node src/tasks/shellcheck/runner.js",
+    "run:install:local": "npm run transpile && node src/tasks/install/runner.js"
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^2.8.0",
@@ -82,7 +90,7 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.11.6",
+    "@types/node": "^11.12.0",
     "@types/sinon": "^7.0.10",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
@@ -98,10 +106,10 @@
     "replace-in-file": "^3.4.4",
     "rimraf": "^2.6.3",
     "semver": "^6.0.0",
-    "sinon": "^7.3.0",
+    "sinon": "^7.3.1",
     "tfx-cli": "^0.6.4",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000",
-    "vsts-bump": "^1.0.7"
+    "vsts-bump": "^1.0.8"
   }
 }
