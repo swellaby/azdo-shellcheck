@@ -1,7 +1,6 @@
 'use strict';
 
 import chai = require('chai');
-import ShellCheckVersion = require('../../../../src/tasks/install/shellcheck-version');
 const taskManifest = require('../../../../src/tasks/install/task.json');
 
 const assert = chai.assert;

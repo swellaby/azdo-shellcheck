@@ -90,7 +90,7 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.11.6",
+    "@types/node": "^11.11.7",
     "@types/sinon": "^7.0.10",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
