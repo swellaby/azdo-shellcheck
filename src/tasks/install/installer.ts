@@ -29,7 +29,7 @@ const installForLinux = async (version: string) => {
     // The ShellCheck binary tarballs are not gzip compressed. The toolLib.extractTar
     // function always adds the 'z' tar option which would always fail for ShellCheck.
     const extractRoot = path.join(taskLib.getVariable('Agent.TempDirectory'), `shellcheck-${version}`);
-    await taskLib.mkdirP(extractRoot);
+    taskLib.mkdirP(extractRoot);
     await taskLib.tool('tar').arg(['xC', extractRoot, '-f', tarballLocation]).exec();
 
     toolLib.prependPath(path.join(extractRoot, `shellcheck-${version}`));
