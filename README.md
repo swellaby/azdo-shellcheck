@@ -33,7 +33,7 @@ The task and extension icons were sourced from the shellcheck.net icon in https:
 [windows-ci-url]: https://dev.azure.com/swellaby/OpenSource/_build/latest?definitionId=60
 [coverage-badge]: https://img.shields.io/azure-devops/coverage/swellaby/opensource/66/master.svg?style=flat-square
 [coverage-url]: https://codecov.io/gh/swellaby/azdo-shellcheck/branch/master
-[tests-badge]: https://img.shields.io/azure-devops/tests/swellaby/opensource/58/master.svg?label=unit%20tests&style=flat-square
+[tests-badge]: https://img.shields.io/azure-devops/tests/swellaby/opensource/66/master.svg?label=unit%20tests&style=flat-square
 [tests-url]: https://dev.azure.com/swellaby/OpenSource/_build/latest?definitionId=66&view=ms.vss-test-web.build-test-results-tab
 [shellcheck-repo]: https://github.com/koalaman/shellcheck
 [contributing]: .github/CONTRIBUTING.md
