@@ -27,8 +27,12 @@ about: Report errors and problems with the Azure DevOps ShellCheck Extension
 <!-- Provide a clear and concise description of the bug/problem you are experiencing. -->
 
 ## Log Output
-<!-- Provide the log output of the ShellCheck task(s) from your pipeline with the error details. Below is an example of what that will look like:
+<!-- Provide the log output of the ShellCheck task(s) from your pipeline with the error details. Below is an example of what that will look like: -->
+```
+```
 
+<!-- 
+```
 ##[section]Starting: Install ShellCheck
 ==============================================================================
 Task         : Install ShellCheck
@@ -54,5 +58,5 @@ Error: Cannot find module 'semver'
     at Function.Module._load (module.js:438:3)
 ##[error]Exit code 1 returned from process: file name '/home/vsts/agents/2.148.2/externals/node/bin/node', arguments '"/home/vsts/work/_tasks/install-shellcheck_3f74db91-b37c-4602-bb92-2658c6d136f2/0.0.17/runner.js"'.
 ##[section]Finishing: Install ShellCheck
-
+```
 -->
