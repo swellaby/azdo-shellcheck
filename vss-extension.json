@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "shellcheck",
   "name": "ShellCheck",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "publisher": "Swellaby",
   "description": "ShellCheck Extension",
   "public": true,
