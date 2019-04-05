@@ -10,6 +10,7 @@ import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 const getTaskLibGetInputStub = () => Sinon.stub(taskLib, 'getInput');
 const getTaskLibSetResultStub = () => Sinon.stub(taskLib, 'setResult');
 const getTaskLibDebugStub = () => Sinon.stub(taskLib, 'debug');
+const getTaskLibWarningStub = () => Sinon.stub(taskLib, 'warning');
 const getTaskLibGetVersionInputStub = (getInputStub?: Sinon.SinonStub) => {
     if (!getInputStub) {
         getInputStub = getTaskLibGetInputStub();
@@ -38,6 +39,9 @@ const getToolLibPrependPathStub = () => Sinon.stub(toolLib, 'prependPath');
 const getToolLibDownloadStub = () => Sinon.stub(toolLib, 'downloadTool');
 
 const getInvalidVersionErrorMessage = (version: string) => `Invalid Version: '${version}'. Allowed values are: latest, stable, 0.6.0, 0.5.0, 0.4.7, 0.4.6 .`;
+const macInstallWarningMessageBase = 'ShellCheck is installed with Homebrew on Mac. Installing custom versions is not yet supported on Mac agents.';
+const macInstallWarningMessageSuffix = `To get rid of this warning, change your target version to 'stable' or switch your pipeline to a different OS`;
+const getMacInstallWarningMessage = (version: string) => `${macInstallWarningMessageBase} Unable to install custom version: ${version}. ${macInstallWarningMessageSuffix}`;
 
 const failedResult = taskLib.TaskResult.Failed;
 const taskFatalErrorMessage = 'Fatal error. Enable debugging to see error details.';
@@ -47,6 +51,7 @@ export = {
     getTaskLibGetInputStub,
     getTaskLibSetResultStub,
     getTaskLibDebugStub,
+    getTaskLibWarningStub,
     getTaskLibGetVersionInputStub,
     getTaskLibGetVariableStub,
     getTaskLibMkdirPStub,
@@ -61,6 +66,7 @@ export = {
     getToolLibPrependPathStub,
     getToolLibDownloadStub,
     getInvalidVersionErrorMessage,
+    getMacInstallWarningMessage,
     failedResult,
     taskFatalErrorMessage,
     shellCheckBinaryUrlBase
