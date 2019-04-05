@@ -50,4 +50,12 @@ suite('Task', () => {
         assert.isTrue(taskLibDebugStub.calledWithExactly(`Error details: ${details}`));
         assert.isTrue(taskLibSetResultStub.calledWithExactly(failedResult, utils.taskFatalErrorMessage));
     });
+
+    test('Should fail with correct error on unsupported operating system', async () => {
+        const os = 'MS-DOS';
+        osTypeStub.callsFake(() => os);
+        await task.run();
+        assert.isTrue(taskLibDebugStub.calledWithExactly(`Error details: Unsupported Operating System: ${os.toLowerCase()}`));
+        assert.isTrue(taskLibSetResultStub.calledWithExactly(failedResult, utils.taskFatalErrorMessage));
+    });
 });
