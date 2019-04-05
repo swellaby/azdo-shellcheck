@@ -142,5 +142,101 @@ suite('Install on Linux', () => {
             await task.run();
             validate(expectedDownloadUrl);
         });
+
+        test('Should correctly install 0.6.0 version on 64 bit architecture', async () => {
+            const versionKey = '0.6.0';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'x64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.6.0 version on 64 bit ARM architecture', async () => {
+            const versionKey = '0.6.0';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'arm64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.5.0 version on 64 bit architecture', async () => {
+            const versionKey = '0.5.0';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'x64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.5.0 version on 64 bit ARM architecture', async () => {
+            const versionKey = '0.5.0';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'arm64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.4.7 version on 64 bit architecture', async () => {
+            const versionKey = '0.4.7';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'x64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.4.7 version on 64 bit ARM architecture', async () => {
+            const versionKey = '0.4.7';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'arm64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.4.6 version on 64 bit architecture', async () => {
+            const versionKey = '0.4.6';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'x64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should correctly install 0.4.6 version on 64 bit ARM architecture', async () => {
+            const versionKey = '0.4.6';
+            const version = ShellCheckVersion[versionKey];
+            taskLibGetVersionInputStub.callsFake(() => versionKey);
+            setDynamicVariablesWithVersion(version);
+            osArchStub.callsFake(() => 'arm64');
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+            await task.run();
+            validate(expectedDownloadUrl);
+        });
+
+        test('Should fail with correct error on unsupported architectures', async () => {
+            const arch = 'x32';
+            osArchStub.callsFake(() => arch);
+            await task.run();
+            assert.isTrue(taskLibDebugStub.calledWithExactly(`Error details: Unsupported architecture ${arch}`));
+            assert.isTrue(taskLibSetResultStub.calledWithExactly(failedResult, utils.taskFatalErrorMessage));
+        });
     });
 });
