@@ -11,9 +11,7 @@ import utils = require('../utils');
 const assert = chai.assert;
 
 suite('Mac Installation', () => {
-    let taskLibSetResultStub: Sinon.SinonStub;
     let taskLibGetVersionInputStub: Sinon.SinonStub;
-    let osTypeStub: Sinon.SinonStub;
     let taskLibWarningStub: Sinon.SinonStub;
     let taskLibToolStub: Sinon.SinonStub;
     let toolRunnerArgStub: Sinon.SinonStub;
@@ -23,9 +21,7 @@ suite('Mac Installation', () => {
         taskLibWarningStub = utils.getTaskLibWarningStub();
         taskLibGetVersionInputStub = utils.getTaskLibGetVersionInputStub();
         taskLibGetVersionInputStub.callsFake(() => ShellCheckVersion.stable);
-        taskLibSetResultStub = utils.getTaskLibSetResultStub();
-        osTypeStub = utils.getOsTypeStub();
-        osTypeStub.callsFake(() => 'Darwin');
+        utils.getOsTypeStub().callsFake(() => 'Darwin');
         taskLibToolStub = utils.getTaskLibToolStub();
         toolRunnerArgStub = utils.getToolRunnerArgStub();
         toolRunnerExecStub = utils.getToolRunnerExecStub();
