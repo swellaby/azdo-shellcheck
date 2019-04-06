@@ -9,7 +9,7 @@ import utils = require('../utils');
 
 const assert = chai.assert;
 
-suite('Task', () => {
+suite('Install Task', () => {
     let taskLibDebugStub: Sinon.SinonStub;
     let taskLibSetResultStub: Sinon.SinonStub;
     let taskLibGetVersionInputStub: Sinon.SinonStub;
