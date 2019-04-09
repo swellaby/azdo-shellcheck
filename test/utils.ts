@@ -1,5 +1,8 @@
 'use strict';
 
+import MockAnswer = require('azure-pipelines-task-lib/mock-answer');
+import MockRun = require('azure-pipelines-task-lib/mock-run');
+import MockTest = require('azure-pipelines-task-lib/mock-test');
 import os = require('os');
 import path = require('path');
 import Sinon = require('sinon');

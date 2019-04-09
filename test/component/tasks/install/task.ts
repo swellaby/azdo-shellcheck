@@ -5,7 +5,7 @@ import Sinon = require('sinon');
 
 import ShellCheckVersion = require('../../../../src/tasks/install/shellcheck-version');
 import task = require('../../../../src/tasks/install/task');
-import utils = require('../utils');
+import utils = require('../../../utils');
 
 const assert = chai.assert;
 
