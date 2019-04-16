@@ -118,7 +118,7 @@
     "replace-in-file": "^3.4.4",
     "rimraf": "^2.6.3",
     "sinon": "^7.3.1",
-    "tfx-cli": "^0.6.4",
+    "tfx-cli": "^0.7.0",
     "tslint": "^5.15.0",
     "typescript": "^3.4.1",
     "vsts-bump": "^1.0.8"
