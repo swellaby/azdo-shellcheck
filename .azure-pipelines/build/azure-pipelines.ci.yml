@@ -63,4 +63,18 @@ steps:
   inputs:
     artifactName: $(vsixArtifactName)
     targetPath: '$(Build.SourcesDirectory)/.vsix'
-  displayName: 'Publish extension VSIX'
+  displayName: 'Upload extension VSIX'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive: full repo tarball'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: tar
+    archiveFile: '$(repoArchivePath)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: full repo tarball'
+  inputs:
+    PathtoPublish: '$(repoArchivePath)'
+    ArtifactName: '$(repoArtifactName)'

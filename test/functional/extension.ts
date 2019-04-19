@@ -14,19 +14,19 @@ suite('Extension', () => {
     });
 
     test('Pipeline should fail on MacOS when scripts do not pass ShellCheck scan', async () => {
-        const definitionId = 1;
+        const definitionId = 3;
         const build = await utils.runAzurePipelinesBuild(organization, project, definitionId);
         assert.deepEqual(build.result, utils.failedResult);
     });
 
     test('Pipeline should fail on Linux when scripts do not pass ShellCheck scan', async () => {
-        const definitionId = 2;
+        const definitionId = 1;
         const build = await utils.runAzurePipelinesBuild(organization, project, definitionId);
         assert.deepEqual(build.result, utils.failedResult);
     });
 
     test('Pipeline should fail on Windows when scripts do not pass ShellCheck scan', async () => {
-        const definitionId = 3;
+        const definitionId = 5;
         const build = await utils.runAzurePipelinesBuild(organization, project, definitionId);
         assert.deepEqual(build.result, utils.failedResult);
     });
@@ -38,7 +38,7 @@ suite('Extension', () => {
     });
 
     test('Pipeline should succeed on Linux when scripts do not pass ShellCheck scan', async () => {
-        const definitionId = 5;
+        const definitionId = 2;
         const build = await utils.runAzurePipelinesBuild(organization, project, definitionId);
         assert.deepEqual(build.result, utils.succeededResult);
     });
