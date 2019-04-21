@@ -49,6 +49,7 @@
     "test": "npm run test:unit",
     "pretest:unit": "npm run transpile && npm run clean:test:unit",
     "test:unit": "mocha --config test/unit/.mocharc.yml",
+    "test:unit:build": "mocha --config test/unit/.mocharc.yml",
     "posttest:unit": "replace-in-file --isRegex true \"/(.js)/g\" .ts .testresults/unit/sonar.xml",
     "pretest:component": "npm run transpile && npm run clean:test:component",
     "test:component": "mocha --config test/component/.mocharc.yml",
