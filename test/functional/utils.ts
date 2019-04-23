@@ -89,12 +89,35 @@ const validateTaskVersions = async (organization: string) => {
     assert.deepEqual(actualShellCheckTaskVersion.patch, expectedShellCheckTaskVersion.Patch);
 };
 
+const getBuildDefinitionIdsForExtensionValidation = () => {
+    if (process.env.USE_AZURE_DEVOPS_PROD_ORG) {
+        return {
+            macFailing: 72,
+            macPassing: 73,
+            linuxFailing: 70,
+            linuxPassing: 71,
+            windowsFailing: 74,
+            windowsPassing: 75
+        };
+    }
+
+    return {
+        macFailing: 3,
+        macPassing: 4,
+        linuxFailing: 1,
+        linuxPassing: 2,
+        windowsFailing: 5,
+        windowsPassing: 6
+    };
+};
+
 export = {
     runAzurePipelinesBuild,
     getExpectedInstallTaskVersion,
     getExpectedShellCheckTaskVersion,
     getAzurePipelinesTaskVersion,
     validateTaskVersions,
+    getBuildDefinitionIdsForExtensionValidation,
     failedResult: 'failed',
     succeededResult: 'succeeded'
 };
