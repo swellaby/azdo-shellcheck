@@ -6,7 +6,7 @@ import utils = require('./utils');
 const assert = chai.assert;
 
 suite('Extension', () => {
-    const organization = process.env.AZURE_DEVOPS_EXTENSION_VALIDATION_ORGANIZATION || 'swellaby-azp-extension-validation';
+    const organization = process.env.AZURE_DEVOPS_EXTENSION_VALIDATION_ORGANIZATION || 'swellaby-azdo-extension-validation';
     const project = process.env.AZURE_DEVOPS_EXTENSION_VALIDATION_PROJECT || 'OpenSource';
 
     suiteSetup(async () => {
