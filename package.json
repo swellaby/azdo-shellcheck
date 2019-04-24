@@ -60,6 +60,7 @@
     "test:functional:at:mac": "npm run test:functional:at -- --grep=Mac",
     "test:functional:at:linux": "npm run test:functional:at -- --grep=Linux",
     "test:functional:at:windows": "npm run test:functional:at -- --grep=Windows",
+    "test:functional:at:ext": "npm run test:functional:at -- --grep=Extension",
     "coverage": "npm run coverage:unit",
     "coverage:enforce": "npm run coverage:unit:enforce",
     "coverage:open": "npm run coverage:unit:open",
@@ -109,7 +110,7 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.13.6",
+    "@types/node": "^11.13.7",
     "@types/sinon": "^7.0.11",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
@@ -128,7 +129,7 @@
     "sinon": "^7.3.2",
     "tfx-cli": "^0.6.3",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.4",
+    "typescript": "^3.4.5",
     "vsts-bump": "^1.0.9"
   }
 }

@@ -16,6 +16,7 @@
   "testExplorer.codeLens": true,
   "cSpell.enabled": true,
   "cSpell.ignorePaths": [
+    "package.json",
     "package-lock.json",
     "**/.git/**",
     ".vscode",
