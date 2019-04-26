@@ -119,5 +119,6 @@ export = {
     validateTaskVersions,
     getBuildDefinitionIdsForExtensionValidation,
     failedResult: 'failed',
-    succeededResult: 'succeeded'
+    succeededResult: 'succeeded',
+    queueAzurePipelinesBuild
 };

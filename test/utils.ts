@@ -1,7 +1,6 @@
 'use strict';
 
 import fs = require('fs');
-import got = require('got');
 import os = require('os');
 import path = require('path');
 import Sinon = require('sinon');
