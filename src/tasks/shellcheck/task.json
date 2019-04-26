@@ -8,8 +8,8 @@
   "helpMarkDown": "[More Information](https://github.com/swellaby/azdo-shellcheck)",
   "version": {
     "Major": 0,
-    "Minor": 2,
-    "Patch": 31
+    "Minor": 3,
+    "Patch": 0
   },
   "instanceNameFormat": "Run ShellCheck",
   "inputs": [
