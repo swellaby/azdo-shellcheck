@@ -110,7 +110,7 @@
     "@swellaby/tslint-config": "^2.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.13.7",
+    "@types/node": "^11.13.8",
     "@types/sinon": "^7.0.11",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
