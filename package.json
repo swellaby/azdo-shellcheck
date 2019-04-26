@@ -91,7 +91,7 @@
     "task:install:upload": "npm run task:install:reupload",
     "task:install:reupload": "tfx build tasks upload --task-path .publish/tasks/install",
     "task:install:delete": "tfx build tasks delete --task-id 3f74db91-b37c-4602-bb92-2658c6d136f2",
-    "version:bump:tasks": "vsts-bump src/tasks/**/task.json",
+    "version:bump:tasks": "vsts-bump -t minor src/tasks/**/task.json",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm run build",
     "run:shellcheck:local": "npm run transpile && node src/tasks/shellcheck/runner.js",
