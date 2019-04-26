@@ -44,6 +44,15 @@ steps:
     git push https://$(pat)@github.com/swellaby/azdo-shellcheck.git
   displayName: 'Package extension'
 
+- task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageVSTSExtension@1
+  displayName: 'Package QA Extension'
+  inputs:
+    outputPath: '$(azdoShellCheckQaExtensionVsixPath)'
+    publisherId: '$(extensionValidationPublisher)'
+    extensionId: '$(azdoShellCheckQaExtensionId)'
+    extensionName: '$(azdoShellCheckQaExtensionId)'
+    extensionVisibility: private
+
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
   displayName: 'Prepare analysis on SonarCloud'
   inputs:
