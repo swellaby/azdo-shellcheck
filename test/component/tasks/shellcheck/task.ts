@@ -68,14 +68,6 @@ suite('ShellCheck Task', () => {
         assert.isTrue(taskLibSetResultStub.calledWithExactly(failedResult, expErrorMessage, true));
     });
 
-    test('Should fail with correct error when invalid ShellDialect specified', async () => {
-        const dialect = 'daAsh';
-        taskLibGetShellDialectInputStub.callsFake(() => dialect);
-        const expErrorMessage = utils.shellCheckTask.getInvalidShellDialectErrorMessage(dialect);
-        await task.run();
-        assert.isTrue(taskLibSetResultStub.calledWithExactly(failedResult, expErrorMessage, true));
-    });
-
     test('Should return with warning when no matching files are found', async () => {
         utils.getTaskLibFindMatchStub().callsFake(() => []);
         await task.run();
