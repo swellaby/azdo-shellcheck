@@ -29,7 +29,7 @@ Swellaby members should create a branch within the repository, make changes ther
 Outside contributors should fork the repository, make changes in the fork, and then open a Pull Request. Check out the [GitHub Forking Projects Guide][fork-guide-url] for more info.
 
 #### PR Validation
-When you create a Pull Request to merge changes, the [PR Validation Build Jobs][ci-pipeline-url] in Azure Pipelines will be triggered automatically to validate the changes on Mac, Linux, and Windows.
+When you create a Pull Request to merge changes, the PR checks in Azure Pipelines will be triggered automatically to validate the changes on Mac, Linux, and Windows.
 
 All of the PR checks must pass before the PR can be merged.
 
@@ -67,9 +67,14 @@ You must write corresponding unit and component tests for any code you add or mo
 #### Functional tests
 This repo also contains the [functional tests][functional-tests] for the Azure DevOps ShellCheck Extension. These are primarily only used from the release pipeline that deploys the extension to the [Marketplace][vs-marketplace]. 
 
-These tests trigger Azure Pipelines builds that utilize the ShellCheck tasks to validate the published tasks are functioning correctly. 
+These tests trigger Azure Pipelines builds that utilize the ShellCheck tasks to validate the published tasks are functioning correctly. Those pipelines are defined in our [ShellCheck Tests Repo][shellcheck-tests-repo] which also contains the sample shell scripts that are used for the ShellCheck scans.
 
-Those pipelines are defined in our [ShellCheck Tests Repo][shellcheck-tests-repo] which also contains the sample shell scripts that are used for the ShellCheck scans.
+The functional tests can be invoked via:
+```sh
+npm run test:functional
+```
+
+However, you most likely will never need to run these functional tests from your local workspace. 
 
 ### Code coverage
 Code coverage is generated, and enforced using [Istanbuljs/nyc][nyc-url]. The unit test suite has 100% coverage of the application source code, and similarly the component test suite also has 100% coverage. We will not accept any changes that drop the code coverage below 100%.
@@ -116,7 +121,60 @@ Or to just run [eslint][eslint-url]:
 npm run eslint
 ```  
 
+### Versioning
+All of the manifest files associated with this extension (the task manifests, the extension manifest, and the package manifest) have their versions automatically incremented (patch version is bumped) by the relevant scripts and/or release process. As such there is no need to manually update the versions in most circumstances. 
+
+When you should manually update a manifest version:
+1) If you add a new option or feature to a task, increase the `minor` version in the associated task manifest (`task.json`)
+2) If a breaking change is introduced to a task (such as changing input names) then increase the `major` version in the associated task manifest (`task.json`)
+3) If a new contribution is added to the extension (such as a new task), then increase the `minor` version in the extension manifest (`vss-extension.json`)
+
+### Running the tasks
+While working on the tasks, you may want to test your changes in a live Azure Pipeline (a "localhost" equivalent) and there are a handful of npm scripts included in this repo to simplify that process.
+
+First, you'll want to determine which Azure DevOps organization you'll use and make sure you have [created a Personal Access Token (PAT)][azdo-pat-url] with permissions to upload tasks. Then, run the `login` script and enter that organization and PAT when prompted:
+```sh
+npm run tfx:login
+```
+
+Once you've done that, you can run (and re-run) the below scripts to upload your tasks as needed:
+
+Upload the `install` task:
+```sh
+npm run task:install:upload
+```
+
+Upload the `shellcheck` task:
+```sh
+npm run task:shellcheck:upload
+```
+
+Upload them both:
+Upload the `shellcheck` task:
+```sh
+npm run tasks:upload
+```
+
+If you want to remove the tasks...
+
+Remove the `install` task:
+```sh
+npm run task:install:delete
+```
+
+Remove the `shellcheck` task:
+```sh
+npm run task:shellcheck:delete
+```
+
 ## Deployment
+The release process for the Azure DevOps ShellCheck extension is fully automated.
+
+As soon as a change is merged into the Master branch, the [continuous integration pipeline][ci-pipeline-url] will start automatically. If the CI job is successful then the changes will proceed along to our [release pipeline][cd-pipeline-url]. 
+
+Our release pipeline will perform a variety of validation steps, including functional tests on Mac, Linux, and Windows. Once all the automated quality gates pass, and approval has been given by a maintainer, the updates will be published to the Marketplace
+
+![](https://user-images.githubusercontent.com/13042488/56629204-3966e580-6612-11e9-875d-4ca30d54be67.png)
 
 [Back to Top][top]
 
@@ -130,7 +188,8 @@ npm run eslint
 [node]: https://nodejs.org/en/download/
 [vs-marketplace]: https://marketplace.visualstudio.com/azuredevops
 [fork-guide-url]: https://guides.github.com/activities/forking/
-[ci-pipeline-url]: https://dev.azure.com/swellaby/OpenSource/_build?definitionId=49
+[ci-pipeline-url]: https://dev.azure.com/swellaby/OpenSource/_build?definitionId=66
+[cd-pipeline-url]: https://dev.azure.com/swellaby/OpenSource/_release?definitionId=11&view=all
 [unit-tests]: ../test/unit
 [component-tests]: ../test/component
 [functional-tests]: ../test/functional
@@ -147,3 +206,4 @@ npm run eslint
 [mocha-url]: https://mochajs.org/
 [mocha-tdd-url]: https://mochajs.org/#tdd
 [sinon-url]: sinonjs.org/
+[azdo-pat-url]: https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops#create-personal-access-tokens-to-authenticate-access
