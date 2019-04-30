@@ -14,6 +14,7 @@
     "junit",
     "lcov",
     "mocharc",
+    "multiline",
     "norc",
     "opensource",
     "picklist",
