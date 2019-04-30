@@ -35,7 +35,7 @@
       "label": "Check Sourced Files",
       "defaultValue": false,
       "required": true,
-      "helpMarkDown": "Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
+      "helpMarkDown": "Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#options) for more information"
     },
     {
       "name": "ignoredErrorCodes",
@@ -55,7 +55,7 @@
       "label": "Output Format",
       "defaultValue": "tty",
       "required": true,
-      "helpMarkDown": "Specify the output format. See the [docs](https://github.com/koalaman/shellcheck/wiki/Integration#pick-the-output-format-that-makes-your-life-easier) for more information",
+      "helpMarkDown": "Specify the output format. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#formats) for more information",
       "options": {
         "tty": "tty (default)",
         "checkstyle": "checkstyle",
@@ -84,7 +84,7 @@
       "label": "Utilize shellcheckrc files",
       "defaultValue": true,
       "required": true,
-      "helpMarkDown": "Look for and use .shellcheckrc files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information"
+      "helpMarkDown": "Look for and use .shellcheckrc files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#rc-files) for more information"
     }
   ],
   "execution": {

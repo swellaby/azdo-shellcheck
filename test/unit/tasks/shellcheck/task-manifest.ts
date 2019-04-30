@@ -85,7 +85,7 @@ suite('ShellCheck TaskManifest', () => {
             assert.deepEqual(input.label, 'Check Sourced Files');
             assert.deepEqual(input.defaultValue, false);
             assert.isTrue(input.required);
-            const expectedHelpText = 'Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information';
+            const expectedHelpText = 'Check sourced files. See the [docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#options) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
         });
 
@@ -111,7 +111,7 @@ suite('ShellCheck TaskManifest', () => {
             assert.deepEqual(input.defaultValue, 'tty');
             assert.isTrue(input.required);
             const expectedHelpText = 'Specify the output format. See the [docs]' +
-                '(https://github.com/koalaman/shellcheck/wiki/Integration#pick-the-output-format-that-makes-your-life-easier) for more information';
+                '(https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#formats) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
             const options = input.options;
             const optionsKeys = Object.keys(options);
@@ -159,7 +159,7 @@ suite('ShellCheck TaskManifest', () => {
             assert.deepEqual(input.defaultValue, true);
             assert.isTrue(input.required);
             const expectedHelpText = 'Look for and use .shellcheckrc files. See the ' +
-                '[docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md) for more information';
+                '[docs](https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#rc-files) for more information';
             assert.deepEqual(input.helpMarkDown, expectedHelpText);
         });
     });
