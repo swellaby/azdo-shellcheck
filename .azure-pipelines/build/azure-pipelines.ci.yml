@@ -33,15 +33,15 @@ steps:
 
 - script: |
     git checkout master
-    git config user.name $(user)
-    git config user.email $(email)
+    git config user.name $(githubUser)
+    git config user.email $(githubEmail)
     npm -f version $(packageBumpType) -m "chore: Bumped to version %s from release pipeline $(succinctAllSkipTokens)"
     export PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version);")
     echo "##vso[task.setVariable variable=packageVersion]$PACKAGE_VERSION"
     npm run package:ext
     git add package-lock.json vss-extension.json src/tasks
     git commit -n -m "chore: Bumped to version $PACKAGE_VERSION from release pipeline $(succinctAllSkipTokens)"
-    git push https://$(pat)@github.com/swellaby/azdo-shellcheck.git
+    git push https://$(githubPat)@github.com/swellaby/azdo-shellcheck.git
   displayName: 'Package extension'
 
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
