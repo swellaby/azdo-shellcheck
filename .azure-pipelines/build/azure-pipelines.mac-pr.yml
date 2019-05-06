@@ -5,7 +5,7 @@ pr:
 - master
 
 pool:
-  vmImage: 'macos-10.13'
+  vmImage: 'macos-10.14'
 
 resources:
   repositories:
