@@ -66,7 +66,7 @@ steps:
   displayName: 'Upload extension VSIX'
 
 - task: ArchiveFiles@2
-  displayName: 'Archive: full repo tarball'
+  displayName: 'Archive: full repo'
   inputs:
     rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false
@@ -74,7 +74,7 @@ steps:
     archiveFile: '$(repoArchivePath)'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: full repo tarball'
+  displayName: 'Publish Artifact: full repo'
   inputs:
     PathtoPublish: '$(repoArchivePath)'
     ArtifactName: '$(repoArtifactName)'
