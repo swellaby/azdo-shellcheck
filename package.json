@@ -114,7 +114,7 @@
     "@types/sinon": "^7.0.11",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "got": "^9.6.0",
     "husky": "^2.1.0",
     "mkdirp": "^0.5.1",
