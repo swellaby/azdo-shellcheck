@@ -1,7 +1,7 @@
 {
   "name": "azdo-shellcheck",
   "description": "Azure DevOps extension for ShellCheck",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "license": "MIT",
   "private": true,
   "repository": {
