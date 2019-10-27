@@ -1,0 +1,12 @@
+parameters:
+  envName: ''
+
+steps:
+- template: templates/yml/node/combo/npm-coverage-validation-xunit-cobertura.yml@templates
+  parameters:
+    publishTestResults:
+      taskDisplayName: 'Publish unit test results'
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'xunit.xml'
+      searchFolder: '$(Build.SourcesDirectory)/.testresults/unit'
+      testRunTitle: 'azdo-shellcheck::Unit Tests::${{ parameters.envName }} PR - Build $(Build.BuildId)'
