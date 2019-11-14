@@ -9,7 +9,7 @@
   "version": {
     "Major": 0,
     "Minor": 1,
-    "Patch": 33
+    "Patch": 34
   },
   "instanceNameFormat": "Install ShellCheck",
   "inputs": [
