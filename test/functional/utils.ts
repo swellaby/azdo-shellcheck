@@ -27,19 +27,16 @@ const getAzureDevOpsApiHeaders = () => {
 };
 
 interface IBuildResponse {
-    body: {
-        status: string
-    };
+    status: string;
 }
 
-const getBuild = async (organization: string, project: string, buildId: number) => {
+const getBuild = (organization: string, project: string, buildId: number) => {
     const url = `${buildAzureDevOpsRestApiBaseUrl(organization, project)}/build/builds/${buildId}?api-version=5.0`;
-    const result: IBuildResponse = await got.get(url).json();
-    return result.body;
+    return got.get(url);
 };
 
 const waitForBuildToFinish = async (organization: string, project: string, buildId: number) => {
-    const build = await getBuild(organization, project, buildId);
+    const build: IBuildResponse = await getBuild(organization, project, buildId).json();
     if (build.status === 'completed') {
         return build;
 
@@ -53,13 +50,10 @@ const waitForBuildToFinish = async (organization: string, project: string, build
 };
 
 interface IQueuedBuildResponse {
-    body: {
-        id: number
-    };
+    id: number;
 }
 
 const queueAzurePipelinesBuild = (organization: string, project: string, definitionId: number) => {
-    // got.post()
     const options: unknown = {
         json: {
             definition: { id: definitionId }
@@ -67,7 +61,6 @@ const queueAzurePipelinesBuild = (organization: string, project: string, definit
         responseType: 'json',
         headers: getAzureDevOpsApiHeaders()
     };
-    // json: true,
 
     const url = `${buildAzureDevOpsRestApiBaseUrl(organization, project)}/build/builds?api-version=5.0`;
     return got.post(url, options);
@@ -75,7 +68,7 @@ const queueAzurePipelinesBuild = (organization: string, project: string, definit
 
 const runAzurePipelinesBuild = async (organization: string, project: string, definitionId: number) => {
     const result: IQueuedBuildResponse = await queueAzurePipelinesBuild(organization, project, definitionId).json();
-    const buildId = result.body.id;
+    const buildId = result.id;
     return await waitForBuildToFinish(organization, project, buildId);
 };
 
@@ -96,7 +89,6 @@ const getAzurePipelinesTaskVersion = async (organization: string, taskId: string
     };
     const url = `https://dev.azure.com/${organization}/_apis/distributedtask/tasks/${taskId}`;
     const result: IAzurePipelinesTaskResponse = await got.get(url, options).json();
-    console.log(`result: ${JSON.stringify(result, null, 2)}`);
     return result.value[0].version;
 };
 
