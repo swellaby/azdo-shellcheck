@@ -2,9 +2,10 @@
 
 import chai = require('chai');
 import fs = require('fs');
-import got = require('got');
+import gotImport = require('got');
 import path = require('path');
 
+const got = gotImport.default;
 const assert = chai.assert;
 
 const getTaskVersion = (taskDirectoryName: string) => {
@@ -25,9 +26,15 @@ const getAzureDevOpsApiHeaders = () => {
     };
 };
 
+interface IBuildResponse {
+    body: {
+        status: string
+    };
+}
+
 const getBuild = async (organization: string, project: string, buildId: number) => {
     const url = `${buildAzureDevOpsRestApiBaseUrl(organization, project)}/build/builds/${buildId}?api-version=5.0`;
-    const result = await got.get(url, { json: true });
+    const result: IBuildResponse = await got.get(url).json();
     return result.body;
 };
 
@@ -45,32 +52,52 @@ const waitForBuildToFinish = async (organization: string, project: string, build
     }
 };
 
+interface IQueuedBuildResponse {
+    body: {
+        id: number
+    };
+}
+
 const queueAzurePipelinesBuild = (organization: string, project: string, definitionId: number) => {
-    const options = <got.GotJSONOptions>{
-        json: true,
-        body: {
+    // got.post()
+    const options: unknown = {
+        json: {
             definition: { id: definitionId }
         },
+        responseType: 'json',
         headers: getAzureDevOpsApiHeaders()
     };
+    // json: true,
+
     const url = `${buildAzureDevOpsRestApiBaseUrl(organization, project)}/build/builds?api-version=5.0`;
     return got.post(url, options);
 };
 
 const runAzurePipelinesBuild = async (organization: string, project: string, definitionId: number) => {
-    const result = await queueAzurePipelinesBuild(organization, project, definitionId);
+    const result: IQueuedBuildResponse = await queueAzurePipelinesBuild(organization, project, definitionId).json();
     const buildId = result.body.id;
     return await waitForBuildToFinish(organization, project, buildId);
 };
 
+interface IAzurePipelinesTaskResponse {
+    value: {
+        version: {
+            major: string,
+            minor: string,
+            patch: string
+        }
+    }[];
+}
+
 const getAzurePipelinesTaskVersion = async (organization: string, taskId: string) => {
-    const options = <got.GotJSONOptions>{
-        json: true,
-        headers: getAzureDevOpsApiHeaders()
+    const options: unknown = {
+        headers: getAzureDevOpsApiHeaders(),
+        responseType: 'json'
     };
     const url = `https://dev.azure.com/${organization}/_apis/distributedtask/tasks/${taskId}`;
-    const result = await got.get(url, options);
-    return result.body.value[0].version;
+    const result: IAzurePipelinesTaskResponse = await got.get(url, options).json();
+    console.log(`result: ${JSON.stringify(result, null, 2)}`);
+    return result.value[0].version;
 };
 
 const validateTaskVersions = async (organization: string) => {
