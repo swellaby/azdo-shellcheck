@@ -115,7 +115,7 @@
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
     "eslint": "^6.0.0",
-    "got": "^9.6.0",
+    "got": "^10.0.1",
     "husky": "^3.0.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
@@ -129,7 +129,7 @@
     "sinon": "^7.3.2",
     "tfx-cli": "0.7.11",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.5",
+    "typescript": "^3.7.2",
     "vsts-bump": "^1.0.9"
   }
 }
