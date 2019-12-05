@@ -91,7 +91,7 @@
     "task:install:upload": "npm run task:install:reupload",
     "task:install:reupload": "tfx build tasks upload --task-path .publish/tasks/install",
     "task:install:delete": "tfx build tasks delete --task-id 3f74db91-b37c-4602-bb92-2658c6d136f2",
-    "version:bump:tasks": "vsts-bump src/tasks/**/task.json",
+    "version:bump:tasks": "azp-bump src/tasks/**/task.json",
     "dev:reset": "npm run clean && node -e \"require('rimraf').sync('node_modules');\" && npm run dev:setup",
     "dev:setup": "npm i && npm run build",
     "run:shellcheck:local": "npm run transpile && node src/tasks/shellcheck/runner.js",
@@ -112,6 +112,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.14",
     "@types/sinon": "^7.5.1",
+    "azp-bump": "^2.0.15",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
     "eslint": "^6.7.2",
@@ -130,6 +131,5 @@
     "tfx-cli": "0.7.11",
     "tslint": "^5.20.1",
     "typescript": "^3.7.3",
-    "vsts-bump": "^1.1.8"
   }
 }
