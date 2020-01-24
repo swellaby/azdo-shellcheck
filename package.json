@@ -118,7 +118,7 @@
     "eslint": "^6.7.2",
     "got": "^10.0.1",
     "husky": "^4.0.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.0",
     "mocha": "^7.0.0",
     "mocha-multi-reporters": "^1.1.7",
     "mocha-sonarqube-reporter": "^1.0.1",
