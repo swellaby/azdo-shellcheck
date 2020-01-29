@@ -109,7 +109,7 @@
     "@swellaby/nyc-config": "^2.0.0",
     "@swellaby/tslint-config": "^3.0.1",
     "@types/chai": "^4.2.6",
-    "@types/mocha": "^5.2.7",
+    "@types/mocha": "^7.0.0",
     "@types/node": "^12.12.14",
     "@types/sinon": "^7.5.1",
     "azp-bump": "^2.0.15",
