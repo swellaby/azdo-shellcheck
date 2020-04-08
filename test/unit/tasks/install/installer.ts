@@ -25,7 +25,8 @@ suite('installers', () => {
         arg: (_val) => null,
         exec: (_options) => null
     };
-    const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
+    // const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
+    const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download'
 
     setup(() => {
         osTypeStub = Sinon.stub(os, 'type');
@@ -54,7 +55,7 @@ suite('installers', () => {
     });
 
     suite('Linux installer', () => {
-        const version = '0.6.0';
+        const version = 'v0.6.0';
         const binaryDirectoryName = `shellcheck-${version}`;
         const downloadDirectory = '/foo/bar';
         const tempDirectoryPath = '/vsts/work/_temp';
@@ -92,7 +93,7 @@ suite('installers', () => {
 
         test('Should install correctly on 64-bit architecture', async () => {
             osArchStub.callsFake(() => 'x64');
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
             await installer.installShellCheck(version);
             assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl));
             assert.isTrue(taskLibGetVariableStub.calledWithExactly('Agent.TempDirectory'));
@@ -105,7 +106,7 @@ suite('installers', () => {
 
         test('Should install correctly on arm 64-bit architecture', async () => {
             osArchStub.callsFake(() => 'arm64');
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
             await installer.installShellCheck(version);
             assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl));
             assert.isTrue(taskLibGetVariableStub.calledWithExactly('Agent.TempDirectory'));
