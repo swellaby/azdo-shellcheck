@@ -9,7 +9,7 @@
   "version": {
     "Major": 0,
     "Minor": 3,
-    "Patch": 54
+    "Patch": 55
   },
   "instanceNameFormat": "Run ShellCheck",
   "inputs": [
