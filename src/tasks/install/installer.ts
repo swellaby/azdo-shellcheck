@@ -8,14 +8,15 @@ import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 import ShellCheckVersion = require('./shellcheck-version');
 
-const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
+const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download'
 
 /**
  * @private
  */
 const installForLinux = async (version: string) => {
     const architecture = os.arch();
-    let tarballName;
+    let tarballName = '';
+    // let baseUrl = '';
     if (architecture === 'x64') {
         tarballName = `shellcheck-${version}.linux.x86_64.tar.xz`;
     } else if (architecture === 'arm64') {
@@ -24,7 +25,7 @@ const installForLinux = async (version: string) => {
         throw new Error(`Unsupported architecture ${architecture}`);
     }
 
-    const downloadUrl = `${shellCheckBinaryUrlBase}/${tarballName}`;
+    const downloadUrl = `${shellCheckBinaryUrlBase}/${version}/${tarballName}`;
     const tarballLocation = await toolLib.downloadTool(downloadUrl);
     // The ShellCheck binary tarballs are not gzip compressed. The toolLib.extractTar
     // function always adds the 'z' tar option which would always fail for ShellCheck.
@@ -56,9 +57,11 @@ const installForMac = async (version: string) => {
  * @private
  */
 const installForWindows = async (version: string) => {
-    const downloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.exe`;
-    const downloadLocation = await toolLib.downloadTool(downloadUrl, 'shellcheck.exe');
-    toolLib.prependPath(path.parse(downloadLocation).dir);
+    const zipName = `shellcheck-${version}.zip`;
+    const zipDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/${zipName}`;
+    const zipDownloadLocation = await toolLib.downloadTool(zipDownloadUrl, zipName);
+    const zipExtractionLocation = await toolLib.extractZip(zipDownloadLocation)
+    toolLib.prependPath(zipExtractionLocation);
 };
 
 /**
