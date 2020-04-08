@@ -16,7 +16,7 @@ const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases
 const installForLinux = async (version: string) => {
     const architecture = os.arch();
     let tarballName = '';
-    // let baseUrl = '';
+
     if (architecture === 'x64') {
         tarballName = `shellcheck-${version}.linux.x86_64.tar.xz`;
     } else if (architecture === 'arm64') {
