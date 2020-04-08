@@ -111,7 +111,7 @@
     "@types/chai": "^4.2.6",
     "@types/mocha": "^7.0.0",
     "@types/node": "^12.12.14",
-    "@types/sinon": "^7.5.1",
+    "@types/sinon": "^9.0.0",
     "azp-bump": "^2.0.15",
     "chai": "^4.2.0",
     "copy-node-modules": "^1.1.1",
