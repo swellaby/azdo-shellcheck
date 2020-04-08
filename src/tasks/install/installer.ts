@@ -8,7 +8,7 @@ import toolRunner = require('azure-pipelines-task-lib/toolrunner');
 
 import ShellCheckVersion = require('./shellcheck-version');
 
-const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download'
+const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download';
 
 /**
  * @private
@@ -60,7 +60,8 @@ const installForWindows = async (version: string) => {
     const zipName = `shellcheck-${version}.zip`;
     const zipDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/${zipName}`;
     const zipDownloadLocation = await toolLib.downloadTool(zipDownloadUrl, zipName);
-    const zipExtractionLocation = await toolLib.extractZip(zipDownloadLocation)
+    const zipExtractionLocation = await toolLib.extractZip(zipDownloadLocation);
+    taskLib.mv(`${zipExtractionLocation}/shellcheck-${version}.exe`, `${zipExtractionLocation}/shellcheck.exe`);
     toolLib.prependPath(zipExtractionLocation);
 };
 
