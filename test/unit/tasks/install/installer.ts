@@ -25,8 +25,8 @@ suite('installers', () => {
         arg: (_val) => null,
         exec: (_options) => null
     };
-    // const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
-    const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download'
+
+    const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download';
 
     setup(() => {
         osTypeStub = Sinon.stub(os, 'type');
@@ -199,25 +199,31 @@ suite('installers', () => {
     });
 
     suite('Windows installer', () => {
-        const version = '0.5.0';
-        const downloadFileName = `shellcheck-${version}.exe`;
-        const shellcheckFileName = 'shellcheck.exe';
+        const version = 'v0.5.0';
+        const downloadFileName = `shellcheck-${version}.zip`;
         const downloadDirectory = 'c:/users/me/temp';
-        const downloadPath = `${downloadDirectory}/${shellcheckFileName}`;
-        let pathParseStub: Sinon.SinonStub;
+        const downloadPath = `${downloadDirectory}/${downloadFileName}`;
+        const extractionDirectory = `c:/agent/_work/tool/shellcheck/${version}`;
+        let taskLibMvStub: Sinon.SinonStub;
+        let toolLibExtractZipStub: Sinon.SinonStub;
 
         setup(() => {
             osTypeStub.callsFake(() => 'Windows_NT');
             toolLibDownloadStub.callsFake(() => Promise.resolve(downloadPath));
-            pathParseStub = Sinon.stub(path, 'parse');
-            pathParseStub.withArgs(downloadPath).callsFake(() => ({ dir: downloadDirectory }));
+            toolLibExtractZipStub = Sinon.stub(toolLib, 'extractZip');
+            toolLibExtractZipStub.withArgs(downloadPath).callsFake(() => Promise.resolve(extractionDirectory));
+            taskLibMvStub = Sinon.stub(taskLib, 'mv');
         });
 
         test('Should install correctly', async () => {
-            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${downloadFileName}`;
+            const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/${downloadFileName}`;
             await installer.installShellCheck(version);
-            assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl, shellcheckFileName));
-            assert.isTrue(toolLibPrependPathStub.calledWithExactly(downloadDirectory));
+            assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl, downloadFileName));
+            assert.isTrue(toolLibPrependPathStub.calledWithExactly(extractionDirectory));
+            assert.isTrue(taskLibMvStub.calledWithExactly(
+                `${extractionDirectory}/shellcheck-${version}.exe`,
+                `${extractionDirectory}/shellcheck.exe`
+            ));
         });
 
         test('Should bubble errors', async () => {
