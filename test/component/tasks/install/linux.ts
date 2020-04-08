@@ -80,7 +80,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => version);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -90,7 +90,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => version);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -100,7 +100,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => version);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -110,7 +110,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => version);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -121,7 +121,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -132,7 +132,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -143,7 +143,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -154,7 +154,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -165,7 +165,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -176,7 +176,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -187,7 +187,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'x64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.x86_64.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.x86_64.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });
@@ -198,7 +198,7 @@ suite('Linux Installation', () => {
         taskLibGetVersionInputStub.callsFake(() => versionKey);
         setDynamicVariablesWithVersion(version);
         osArchStub.callsFake(() => 'arm64');
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.linux.armv6hf.tar.xz`;
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.linux.armv6hf.tar.xz`;
         await task.run();
         validate(expectedDownloadUrl);
     });

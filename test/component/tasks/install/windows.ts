@@ -1,7 +1,6 @@
 'use strict';
 
 import chai = require('chai');
-import path = require('path');
 import Sinon = require('sinon');
 
 import ShellCheckVersion = require('../../../../src/tasks/install/shellcheck-version');
@@ -12,21 +11,25 @@ const assert = chai.assert;
 
 suite('Windows Installation', () => {
     let taskLibGetVersionInputStub: Sinon.SinonStub;
+    let taskLibMvStub: Sinon.SinonStub;
     let toolLibPrependPathStub: Sinon.SinonStub;
     let toolLibDownloadStub: Sinon.SinonStub;
+    let toolLibExtractZipStub: Sinon.SinonStub;
     const shellCheckBinaryUrlBase = utils.shellCheckBinaryUrlBase;
-    const shellcheckFileName = 'shellcheck.exe';
     const downloadDirectory = 'c:/users/me/temp';
-    const downloadPath = `${downloadDirectory}/${shellcheckFileName}`;
+    const extractionDirectory = 'd:/agent/_work/temp/abc123def456';
+    const downloadPath = `${downloadDirectory}/shellcheck-version.zip`;
 
     setup(() => {
         taskLibGetVersionInputStub = utils.getTaskLibGetVersionInputStub();
         taskLibGetVersionInputStub.callsFake(() => ShellCheckVersion.stable);
+        taskLibMvStub = utils.getTaskLibMvStub();
         utils.getOsTypeStub().callsFake(() => 'Windows_NT');
         toolLibPrependPathStub = utils.getToolLibPrependPathStub();
         toolLibDownloadStub = utils.getToolLibDownloadStub();
-        Sinon.stub(path, 'parse').withArgs(downloadPath).callsFake(() => (<path.ParsedPath>{ dir: downloadDirectory }));
         toolLibDownloadStub.callsFake(() => Promise.resolve(downloadPath));
+        toolLibExtractZipStub = utils.getToolLibExtractZipStub();
+        toolLibExtractZipStub.callsFake(() => Promise.resolve(extractionDirectory));
     });
 
     teardown(() => {
@@ -34,9 +37,15 @@ suite('Windows Installation', () => {
     });
 
     const validate = (version: string) => {
-        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/shellcheck-${version}.exe`;
-        assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl, shellcheckFileName));
-        assert.isTrue(toolLibPrependPathStub.calledWithExactly(downloadDirectory));
+        const expectedDownloadUrl = `${shellCheckBinaryUrlBase}/${version}/shellcheck-${version}.zip`;
+        const expectedDownloadFile = `shellcheck-${version}.zip`;
+        assert.isTrue(toolLibDownloadStub.calledWithExactly(expectedDownloadUrl, expectedDownloadFile));
+        assert.isTrue(toolLibExtractZipStub.calledWithExactly(downloadPath));
+        assert.isTrue(taskLibMvStub.calledWithExactly(
+            `${extractionDirectory}/shellcheck-${version}.exe`,
+            `${extractionDirectory}/shellcheck.exe`
+        ));
+        assert.isTrue(toolLibPrependPathStub.calledWithExactly(extractionDirectory));
     };
 
     test('Should correctly install latest version', async () => {

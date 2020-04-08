@@ -25,6 +25,7 @@ const getTaskLibGetVariableStub = () => Sinon.stub(taskLib, 'getVariable');
 const getTaskLibMkdirPStub = () => Sinon.stub(taskLib, 'mkdirP');
 const getTaskLibWhichStub = () => Sinon.stub(taskLib, 'which');
 const getTaskLibCwdStub = () => Sinon.stub(taskLib, 'cwd').callsFake(() => '/var/vsts');
+const getTaskLibMvStub = () => Sinon.stub(taskLib, 'mv');
 
 const getOsTypeStub = () => Sinon.stub(os, 'type').callsFake(() => '');
 const getOsArchStub = () => Sinon.stub(os, 'arch').callsFake(() => '');
@@ -43,6 +44,7 @@ const getToolRunnerArgIfStub = () => Sinon.stub(toolRunnerStub, 'argIf').callsFa
 const getToolRunnerExecStub = () => Sinon.stub(toolRunnerStub, 'exec').callsFake(() => toolRunnerStub);
 const getToolLibPrependPathStub = () => Sinon.stub(toolLib, 'prependPath');
 const getToolLibDownloadStub = () => Sinon.stub(toolLib, 'downloadTool');
+const getToolLibExtractZipStub = () => Sinon.stub(toolLib, 'extractZip');
 
 const getInvalidVersionErrorMessage = (version: string) => `Invalid Version: '${version}'. Allowed values are: latest, stable, 0.6.0, 0.5.0, 0.4.7, 0.4.6 .`;
 const macInstallWarningMessageBase = 'ShellCheck is installed with Homebrew on Mac. Installing custom versions is not yet supported on Mac agents.';
@@ -52,7 +54,7 @@ const getMacInstallWarningMessage = (version: string) => `${macInstallWarningMes
 const failedResult = taskLib.TaskResult.Failed;
 const succeededResult = taskLib.TaskResult.Succeeded;
 const taskFatalErrorMessage = 'Fatal error. Enable debugging to see error details.';
-const shellCheckBinaryUrlBase = 'https://shellcheck.storage.googleapis.com';
+const shellCheckBinaryUrlBase = 'https://github.com/koalaman/shellcheck/releases/download';
 const targetFiles = '**/*sh';
 const targetFilesInputKey = 'targetFiles';
 const matchedScriptFiles = [ 'foo.sh', 'bar.sh' ];
@@ -168,6 +170,7 @@ export = {
     getTaskLibToolStub,
     getTaskLibFindMatchStub,
     getTaskLibCwdStub,
+    getTaskLibMvStub,
     getOsTypeStub,
     getOsArchStub,
     getPathJoinStub,
@@ -178,6 +181,7 @@ export = {
     getToolRunnerExecStub,
     getToolLibPrependPathStub,
     getToolLibDownloadStub,
+    getToolLibExtractZipStub,
     getInvalidVersionErrorMessage,
     getMacInstallWarningMessage,
     failedResult,
