@@ -120,7 +120,7 @@
     "husky": "^4.3.0",
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.0",
-    "mocha-multi-reporters": "^1.1.7",
+    "mocha-multi-reporters": "^1.5.1",
     "mocha-sonarqube-reporter": "^1.0.2",
     "ncp": "^2.0.0",
     "nyc": "^15.1.0",
