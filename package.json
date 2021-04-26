@@ -98,7 +98,7 @@
     "run:install:local": "npm run transpile && node src/tasks/install/runner.js"
   },
   "dependencies": {
-    "azure-pipelines-task-lib": "^2.9.3",
+    "azure-pipelines-task-lib": "^3.0.0",
     "azure-pipelines-tool-lib": "^0.13.0",
     "semver": "^7.0.0",
     "tslib": "^2.0.0",
