@@ -99,7 +99,7 @@
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^3.0.0",
-    "azure-pipelines-tool-lib": "^0.13.0",
+    "azure-pipelines-tool-lib": "^1.0.0",
     "semver": "^7.0.0",
     "tslib": "^2.0.0",
     "uuid": "^8.0.0"
